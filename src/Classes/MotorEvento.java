@@ -16,6 +16,26 @@ public class MotorEvento {
         OrdenarEventos();
     }
 
+    public Evento ObterProximoEvento(int tempo) {
+
+        if(this.Eventos.size() > 0) {
+            Evento e = this.Eventos.get(0);
+
+            if(e.TempoAgendado <= tempo) {
+                this.Eventos.remove(e);
+                return e;
+            }
+            else {
+                return new Evento(Evento.EV_VAZIO,0,0);
+            }
+        }
+
+        return new Evento(Evento.EV_VAZIO,0,0);
+    }
+
+    public int EventosNaFila() {
+        return this.Eventos.size();
+    }
 
     private void OrdenarEventos() {
         Eventos.sort((o1, o2) -> {
@@ -46,13 +66,4 @@ public class MotorEvento {
         });
     }
 
-    public Evento ObterProximoEvento(int tempo) {
-        for (Evento e:this.Eventos) {
-            if(e.TempoAgendado <=tempo) {
-                return e;
-            }
-        }
-
-        return new Evento(this,"Evento Vazio",Evento.EV_VAZIO,0,0);
-    }
 }

@@ -3,7 +3,7 @@ package Classes;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Memoria {
+public abstract class   Memoria {
 
     public static List<String> Linhas;
     public static List<List<Simbolo>> Simbolos;

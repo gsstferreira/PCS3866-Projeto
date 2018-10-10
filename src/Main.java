@@ -1,18 +1,12 @@
 import Classes.Memoria;
-import Classes.MotorEvento;
+import Classes.Simbolo;
+import Motores.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class Main {
-
-    private static MotorEvento MotorNivel_0;
-    private static MotorEvento MotorNivel_1;
-    private static MotorEvento MotorNivel_2;
-    private static MotorEvento MotorNivel_3;
-    private static MotorEvento MotorNivel_4;
-    private static MotorEvento MotorNivel_5;
-    private static MotorEvento MotorNivel_6;
 
     private static int ContadorTempo;
 
@@ -20,21 +14,37 @@ public class Main {
 
         Memoria.InializarMemoria();
 
-        MotorNivel_0 = new MotorEvento();
-        MotorNivel_1 = new MotorEvento();
-        MotorNivel_2 = new MotorEvento();
-        MotorNivel_3 = new MotorEvento();
-        MotorNivel_4 = new MotorEvento();
-        MotorNivel_5 = new MotorEvento();
-        MotorNivel_6 = new MotorEvento();
-
         ContadorTempo = 0;
 
         try {
-            FileInputStream fileInputStream = new FileInputStream("teste.txt");
-            fileInputStream.read();
+            ControleMotores.InicializaMotores(new FileInputStream("TestesTxt/Teste.txt"));
         } catch (IOException e) {
             System.out.print("Arquivo 'teste.txt'não foi encontrado.\n");
+            return;
+        }
+
+        while (ControleMotores.ContinuarAnalise()) {
+
+            Nivel1.RealizarEvento(ContadorTempo);
+
+            if(ControleMotores.ErroDeLeitura) {
+               break;
+            }
+
+            Nivel2.RealizarEvento(ContadorTempo);
+            Nivel3.RealizarEvento(ContadorTempo);
+            Nivel4.RealizarEvento(ContadorTempo);
+
+            ContadorTempo++;
+        }
+
+        for (List<Simbolo> l:Memoria.Simbolos) {
+            for (Simbolo s:l) {
+                if(s.Simbolo != '\r' && s.Simbolo != '\n') {
+                    System.out.print(String.format("%s ",s.Simbolo));
+                }
+            }
+            System.out.print("\n");
         }
     }
 }

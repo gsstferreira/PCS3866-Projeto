@@ -1,17 +1,12 @@
 package Classes;
 
 public class Evento {
-
-    public MotorEvento Motor;
-    public String Descricao;
-    public int Tipo;
+        public int Tipo;
     public long TempoDeOrigem;
     public long TempoAgendado;
 
-    public Evento(MotorEvento motor, String descr, int tipo, long tOrigem, long tExec) {
+    public Evento(int tipo, long tOrigem, long tExec) {
 
-        this.Motor = motor;
-        this.Descricao = descr;
         this.Tipo = tipo;
 
         this.TempoDeOrigem = tOrigem;
