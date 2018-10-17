@@ -20,18 +20,21 @@ public abstract class Nivel4 {
 
             if(s != null) {
 
-
                 NumeroChar++;
                 CategorizadorCaractere.IdentificarSimbolo(s);
 
                 if(s.Tipo == Simbolo.S_INVALIDO) {
-                    System.out.print(String.format("Erro: Classificação de Símbolo (linha %d, %d), interrompendo análise.\n",NumeroLinha+1,NumeroChar+1));
+                    System.out.print(String.format("Erro: Classificação do Símbolo (linha %d, %d), interrompendo análise.\n",NumeroLinha+1,NumeroChar+1));
                 }
 
                 else if(NumeroChar == Memoria.Simbolos.get(NumeroLinha).size()) {
                     NumeroLinha++;
                     NumeroChar = 0;
                 }
+
+                Evento e2 = new Evento(Evento.EV_CLASSIFICAR_TOKENS,tempo,tempo+1);
+                ControleMotores.MotorNivel_5.AdicionarEvento(e2);
+
             }
         }
     }
