@@ -24,6 +24,7 @@ public abstract class Nivel4 {
                 CategorizadorCaractere.IdentificarSimbolo(s);
 
                 if(s.Tipo == Simbolo.S_INVALIDO) {
+                    ControleMotores.ErroDeLeitura = true;
                     System.out.print(String.format("Erro: Classificação do Símbolo (linha %d, %d), interrompendo análise.\n",NumeroLinha+1,NumeroChar+1));
                 }
 
@@ -34,7 +35,6 @@ public abstract class Nivel4 {
 
                 Evento e2 = new Evento(Evento.EV_CLASSIFICAR_TOKENS,tempo,tempo+1);
                 ControleMotores.MotorNivel_5.AdicionarEvento(e2);
-
             }
         }
     }

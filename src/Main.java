@@ -1,5 +1,6 @@
 import Classes.Memoria;
 import Classes.Simbolo;
+import Classes.Token;
 import Motores.*;
 
 import java.io.FileInputStream;
@@ -32,17 +33,31 @@ public class Main {
             }
 
             Nivel2.RealizarEvento(ContadorTempo);
+
+            if(ControleMotores.ErroDeLeitura) {
+                break;
+            }
+
             Nivel3.RealizarEvento(ContadorTempo);
+
+            if(ControleMotores.ErroDeLeitura) {
+                break;
+            }
+
             Nivel4.RealizarEvento(ContadorTempo);
+
+            if(ControleMotores.ErroDeLeitura) {
+                break;
+            }
+
+            Nivel5.RealizarEvento(ContadorTempo);
 
             ContadorTempo++;
         }
 
-        for (List<Simbolo> l:Memoria.Simbolos) {
-            for (Simbolo s:l) {
-                if(s.Simbolo != '\r' && s.Simbolo != '\n') {
-                    System.out.print(String.format("%s ",s.Simbolo));
-                }
+        for (List<Token> l:Memoria.Tokens) {
+            for (Token t:l) {
+                System.out.print(String.format("%s ",t.Token));
             }
             System.out.print("\n");
         }

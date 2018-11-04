@@ -5,6 +5,8 @@ import Classes.Memoria;
 import Classes.Simbolo;
 import Classes.Token;
 
+import java.util.ArrayList;
+
 public abstract class Nivel5 {
 
     private static int NumeroLinha = 0;
@@ -18,6 +20,10 @@ public abstract class Nivel5 {
         if(e.Tipo == Evento.EV_CLASSIFICAR_TOKENS) {
 
             Simbolo s = Memoria.Simbolos.get(NumeroLinha).get(NumeroChar);
+
+            if(Memoria.Tokens.size() < NumeroLinha + 1) {
+                Memoria.Tokens.add(new ArrayList<>());
+            }
 
             if(s != null) {
 
@@ -56,7 +62,7 @@ public abstract class Nivel5 {
 
                         Token token2 = new Token();
                         token2.Token = String.format("%c",s.Simbolo);
-                        Memoria.Tokens.get(NumeroLinha).add(token);
+                        Memoria.Tokens.get(NumeroLinha).add(token2);
                         break;
 
                     case Simbolo.S_CONTROLE:
