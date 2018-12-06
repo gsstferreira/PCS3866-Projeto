@@ -28,7 +28,7 @@ public abstract class Nivel5 {
             if(s != null) {
 
                 Token token = new Token();
-
+                Evento e2;
                 NumeroChar++;
                 switch(s.Tipo) {
                     case Simbolo.S_LETRA_MIN:
@@ -49,6 +49,8 @@ public abstract class Nivel5 {
                         if(!token.Token.equals("")) {
                             Memoria.Tokens.get(NumeroLinha).add(token);
                             TokenBuilder = new StringBuilder();
+                            e2 = new Evento(Evento.EV_RECLASSIFICAR_TOKENS,tempo,tempo+1);
+                            ControleMotores.MotorNivel_6.AdicionarEvento(e2);
                         }
                         break;
 
@@ -58,11 +60,15 @@ public abstract class Nivel5 {
                         if(!token.Token.equals("")) {
                             Memoria.Tokens.get(NumeroLinha).add(token);
                             TokenBuilder = new StringBuilder();
+                            e2 = new Evento(Evento.EV_RECLASSIFICAR_TOKENS,tempo,tempo+1);
+                            ControleMotores.MotorNivel_6.AdicionarEvento(e2);
                         }
 
                         Token token2 = new Token();
                         token2.Token = String.format("%c",s.Simbolo);
                         Memoria.Tokens.get(NumeroLinha).add(token2);
+                        e2 = new Evento(Evento.EV_RECLASSIFICAR_TOKENS,tempo,tempo+1);
+                        ControleMotores.MotorNivel_6.AdicionarEvento(e2);
                         break;
 
                     case Simbolo.S_CONTROLE:
@@ -71,6 +77,8 @@ public abstract class Nivel5 {
                         if(!token.Token.equals("")) {
                             Memoria.Tokens.get(NumeroLinha).add(token);
                             TokenBuilder = new StringBuilder();
+                            e2 = new Evento(Evento.EV_RECLASSIFICAR_TOKENS,tempo,tempo+1);
+                            ControleMotores.MotorNivel_6.AdicionarEvento(e2);
                         }
                         break;
                 }

@@ -1,6 +1,7 @@
 import Classes.Memoria;
-import Classes.Simbolo;
 import Classes.Token;
+import Metodos.CategorizadorToken;
+import Metodos.Geral;
 import Motores.*;
 
 import java.io.FileInputStream;
@@ -13,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Memoria.InializarMemoria();
+        Memoria.InicializarMemoria();
 
         ContadorTempo = 0;
 
@@ -23,6 +24,8 @@ public class Main {
             System.out.print("Arquivo 'teste.txt'não foi encontrado.\n");
             return;
         }
+
+        CategorizadorToken.InicializaRecategoriador();
 
         while (ControleMotores.ContinuarAnalise()) {
 
@@ -52,12 +55,57 @@ public class Main {
 
             Nivel5.RealizarEvento(ContadorTempo);
 
+            if(ControleMotores.ErroDeLeitura) {
+                break;
+            }
+
+
             ContadorTempo++;
         }
 
-        for (List<Token> l:Memoria.Tokens) {
+        while(ControleMotores.ContinuarAnaliseNivel6()) {
+
+            Nivel6.RealizarEvento(ContadorTempo);
+
+            if(ControleMotores.ErroDeLeitura) {
+                break;
+            }
+
+            ContadorTempo++;
+        }
+
+        for (List<Token> l:Memoria.TokensReclassificados) {
             for (Token t:l) {
-                System.out.print(String.format("%s ",t.Token));
+                switch (t.Tipo){
+
+                    case Token.IDENTIFICADOR:
+                        Geral.PrintColor(t.Token,Geral.ANSI_YELLOW);
+                        break;
+                    case Token.NUMERO:
+                        Geral.PrintColor(t.Token,Geral.ANSI_GREEN);
+                        break;
+                    case Token.RESERVADO:
+                        Geral.PrintColor(t.Token.concat(" "),Geral.ANSI_CYAN);
+                        break;
+                    case  Token.OPERADOR:
+                        Geral.PrintColor(String.format(" %s ",t.Token),Geral.ANSI_RED);
+                        break;
+                    case Token.CONTROLE:
+                        Geral.PrintColor(t.Token,Geral.ANSI_RESET);
+                        break;
+                    case Token.PREDEFINIDO:
+                        Geral.PrintColor(t.Token.concat(" "),Geral.ANSI_CYAN);
+                        break;
+                    case Token.STOP:
+                        Geral.PrintColor(" ".concat(t.Token),Geral.ANSI_BLUE);
+                        break;
+                    case Token.END:
+                        Geral.PrintColor(t.Token,Geral.ANSI_BLUE);
+                        break;
+                    default:
+                        Geral.PrintColor(t.Token,Geral.ANSI_RESET);
+                        break;
+                }
             }
             System.out.print("\n");
         }
