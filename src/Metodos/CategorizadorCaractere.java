@@ -1,15 +1,15 @@
 package Metodos;
 
-import Classes.Simbolo;
+import Classes.Caractere;
 
 public abstract class CategorizadorCaractere {
 
-    private static final String ESPECIAIS = "\\\'\"!?@#$%¨&*()_-=+{}[]/<>,.:;~^";
+    private static final String ESPECIAIS = "\"*()-=+/<>,.:^";
     private static final String CONTROLES = "\n\r";
 
-    public static void FiltragemSimbolo(Simbolo s) {
+    public static void FiltragemSimbolo(Caractere s) {
 
-        char c = s.Simbolo;
+        char c = s.Caractere;
 
         if(c == ' ' || c == '\t') {
             s.Util = false;
@@ -19,32 +19,27 @@ public abstract class CategorizadorCaractere {
         }
     }
 
-    public static void IdentificarSimbolo(Simbolo s) {
+    public static void IdentificarSimbolo(Caractere s) {
 
-        char c = s.Simbolo;
+        char c = s.Caractere;
 
         if(Character.isLetter(c)) {
-            if(Character.isUpperCase(c)){
-                s.Tipo = Simbolo.S_LETRA_MAI;
-            }
-            else {
-                s.Tipo = Simbolo.S_LETRA_MIN;
-            }
+            s.Tipo = Caractere.LETRA;
         }
         else if(Character.isDigit(c)){
-            s.Tipo = Simbolo.S_DIGITO;
+            s.Tipo = Caractere.DIGITO;
         }
         else if(c == ' ' || c == '\t') {
-            s.Tipo = Simbolo.S_ESPACO;
+            s.Tipo = Caractere.ESPACO;
         }
         else if(ESPECIAIS.contains(String.format("%c",c))) {
-            s.Tipo = Simbolo.S_ESPECIAL;
+            s.Tipo = Caractere.ESPECIAL;
         }
         else if(CONTROLES.contains(String.format("%c",c))) {
-            s.Tipo = Simbolo.S_CONTROLE;
+            s.Tipo = Caractere.CONTROLE;
         }
         else {
-            s.Tipo = Simbolo.S_INVALIDO;
+            s.Tipo = Caractere.OUTRO;
         }
     }
 

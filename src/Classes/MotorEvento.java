@@ -26,11 +26,11 @@ public class MotorEvento {
                 return e;
             }
             else {
-                return new Evento(Evento.EV_VAZIO,0,0);
+                return new Evento(Evento.VAZIO,0,0);
             }
         }
 
-        return new Evento(Evento.EV_VAZIO,0,0);
+        return new Evento(Evento.VAZIO,0,0);
     }
 
     public int EventosNaFila() {

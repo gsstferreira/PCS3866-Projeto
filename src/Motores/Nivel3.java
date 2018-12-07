@@ -2,7 +2,7 @@ package Motores;
 
 import Classes.Evento;
 import Classes.Memoria;
-import Classes.Simbolo;
+import Classes.Caractere;
 import Metodos.CategorizadorCaractere;
 
 public abstract class Nivel3 {
@@ -12,21 +12,21 @@ public abstract class Nivel3 {
 
     public static void RealizarEvento(int tempo) {
 
-        Evento e = ControleMotores.MotorNivel_3.ObterProximoEvento(tempo);
+        Evento e = ControleMotores.AcessoMotor(3).ObterProximoEvento(tempo);
 
-        if(e.Tipo == Evento.EV_LER_SIMBOLOS) {
+        if(e.Tipo == Evento.LER_SIMBOLOS) {
 
-            Simbolo s = Memoria.Simbolos.get(NumeroLinha).get(NumeroChar);
+            Caractere s = Memoria.Caracteres.get(NumeroLinha).get(NumeroChar);
 
             if(s != null) {
 
                 NumeroChar++;
                 CategorizadorCaractere.FiltragemSimbolo(s);
 
-                Evento e2 = new Evento(Evento.EV_LER_SIMBOLOS_UTEIS,tempo,tempo+1);
-                ControleMotores.MotorNivel_4.AdicionarEvento(e2);
+                Evento e2 = new Evento(Evento.LER_SIMBOLOS_UTEIS,tempo,tempo+1);
+                ControleMotores.AcessoMotor(4).AdicionarEvento(e2);
 
-                if(NumeroChar == Memoria.Simbolos.get(NumeroLinha).size()) {
+                if(NumeroChar == Memoria.Caracteres.get(NumeroLinha).size()) {
                     NumeroLinha++;
                     NumeroChar = 0;
                 }

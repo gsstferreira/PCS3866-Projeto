@@ -1,5 +1,8 @@
 package Metodos;
 
+import Motores.ControleMotores;
+import Motores.Nivel1;
+
 import java.io.FileInputStream;
 
 public abstract class SeparadorLinha {
@@ -16,13 +19,17 @@ public abstract class SeparadorLinha {
                 sb.append(c);
             }
 
+            if(fileInputStream.available() < 1) {
+                Nivel1.eof = true;
+            }
+
             String s = sb.toString();
 
             if(!s.contains("\r\n") && !s.isEmpty()) {
 
                 s = s.replace("\r","");
                 s = s.replace("\n","");
-                s = s.concat("\r\n");
+                s = s.concat("\n\r");
             }
 
             return s;

@@ -2,7 +2,6 @@ package Motores;
 
 import Classes.Evento;
 import Classes.Memoria;
-import Classes.Simbolo;
 import Classes.Token;
 import Metodos.CategorizadorToken;
 
@@ -17,9 +16,9 @@ public abstract class Nivel6 {
 
     public static void RealizarEvento(int tempo) {
 
-        Evento e = ControleMotores.MotorNivel_6.ObterProximoEvento(tempo);
+        Evento e = ControleMotores.AcessoMotor(6).ObterProximoEvento(tempo);
 
-        if(e.Tipo == Evento.EV_RECLASSIFICAR_TOKENS) {
+        if(e.Tipo == Evento.RECLASSIFICAR_TOKENS) {
 
             Token t = Memoria.Tokens.get(NumeroLinha).get(NumeroToken);
 
@@ -89,6 +88,11 @@ public abstract class Nivel6 {
                 Memoria.TokensReclassificados.get(NumeroLinha).add(tr);
                 ultimoToken = null;
                 break;
+            case Token.STRING:
+                tr.Tipo = Token.STRING;
+                Memoria.TokensReclassificados.get(NumeroLinha).add(tr);
+                ultimoToken = null;
+                break;
             case Token.OPERADOR:
                 tr.Tipo = Token.OPERADOR;
                 Memoria.TokensReclassificados.get(NumeroLinha).add(tr);
@@ -121,8 +125,8 @@ public abstract class Nivel6 {
                 ultimoToken = null;
                 Memoria.TokensReclassificados.get(NumeroLinha).add(tr);
                 break;
-            case Token.CONTROLE:
-                tr.Tipo = Token.CONTROLE;
+            case Token.SINALIZADOR:
+                tr.Tipo = Token.SINALIZADOR;
                 ultimoToken = null;
                 Memoria.TokensReclassificados.get(NumeroLinha).add(tr);
                 break;
@@ -131,6 +135,14 @@ public abstract class Nivel6 {
                 break;
             default:
                 ControleMotores.ErroDeLeitura = true;
+
+                if(ultimoToken != null) {
+                    ControleMotores.DescricaoErro = String.format("Erro: Reclassificação do Token \"%s\" (linha %d, %d), interrompendo análise.\n",ultimoToken.Token,NumeroLinha,NumeroToken - 2);
+                }
+                else {
+                    ControleMotores.DescricaoErro = String.format("Erro: Reclassificação do Token \"%s\" (linha %d, %d), interrompendo análise.\n",t.Token,NumeroLinha,NumeroToken - 1);
+                }
+
                 ultimoToken = null;
                 break;
         }

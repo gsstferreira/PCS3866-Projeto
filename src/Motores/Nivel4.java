@@ -2,7 +2,7 @@ package Motores;
 
 import Classes.Evento;
 import Classes.Memoria;
-import Classes.Simbolo;
+import Classes.Caractere;
 import Metodos.CategorizadorCaractere;
 
 public abstract class Nivel4 {
@@ -12,29 +12,24 @@ public abstract class Nivel4 {
 
     public static void RealizarEvento(int tempo) {
 
-        Evento e = ControleMotores.MotorNivel_4.ObterProximoEvento(tempo);
+        Evento e = ControleMotores.AcessoMotor(4).ObterProximoEvento(tempo);
 
-        if(e.Tipo == Evento.EV_LER_SIMBOLOS_UTEIS) {
+        if(e.Tipo == Evento.LER_SIMBOLOS_UTEIS) {
 
-            Simbolo s = Memoria.Simbolos.get(NumeroLinha).get(NumeroChar);
+            Caractere s = Memoria.Caracteres.get(NumeroLinha).get(NumeroChar);
 
             if(s != null) {
 
                 NumeroChar++;
                 CategorizadorCaractere.IdentificarSimbolo(s);
 
-                if(s.Tipo == Simbolo.S_INVALIDO) {
-                    ControleMotores.ErroDeLeitura = true;
-                    System.out.print(String.format("Erro: Classificação do Símbolo (linha %d, %d), interrompendo análise.\n",NumeroLinha+1,NumeroChar+1));
-                }
-
-                else if(NumeroChar == Memoria.Simbolos.get(NumeroLinha).size()) {
+                if(NumeroChar == Memoria.Caracteres.get(NumeroLinha).size()) {
                     NumeroLinha++;
                     NumeroChar = 0;
                 }
 
-                Evento e2 = new Evento(Evento.EV_CLASSIFICAR_TOKENS,tempo,tempo+1);
-                ControleMotores.MotorNivel_5.AdicionarEvento(e2);
+                Evento e2 = new Evento(Evento.CLASSIFICAR_TOKENS,tempo,tempo+1);
+                ControleMotores.AcessoMotor(5).AdicionarEvento(e2);
             }
         }
     }
