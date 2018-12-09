@@ -1,7 +1,6 @@
 package Sintaxe;
 
-import Classes.AnalisadorSintatico.Automatos.ASSIGN;
-import Classes.AnalisadorSintatico.Automatos.EXP;
+import Classes.AnalisadorSintatico.Automatos.*;
 import Classes.Memoria;
 import Classes.Token;
 
@@ -17,5 +16,14 @@ public abstract class ControleSintaxe {
 
         EXP.InicializarAutomato();
         ASSIGN.InicializarAutomato(EXP.automato);
+        DATA.InicializarAutomato();
+        GOSUB.InicializarAutomato();
+        GOTO.InicializarAutomato();
+        IF.InicializarAutomato(EXP.automato);
+        NEXT.InicializarAutomato();
+        PRINT.InicializarAutomato(EXP.automato);
+        READ.InicializarAutomato();
+        REMARK.InicializarAutomato();
+        RETURN.InicializarAutomato();
     }
 }

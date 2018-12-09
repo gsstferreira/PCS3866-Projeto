@@ -65,7 +65,7 @@ public abstract class CategorizadorToken {
 
         else if(s.chars().allMatch(Character::isLetter)){ return Token.IDENTIFICADOR; }
 
-        else if(s.matches("[a-zA-z]\\d?")) { return Token.IDENTIFICADOR; }
+        else if(s.matches("[A-Z]\\d?")) { return Token.IDENTIFICADOR; }
 
         else if(s.chars().allMatch(Character::isDigit)) { return Token.NUMERO; }
 

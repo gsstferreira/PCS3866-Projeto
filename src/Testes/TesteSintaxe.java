@@ -1,7 +1,9 @@
 package Testes;
 
 import Classes.AnalisadorSintatico.Automatos.ASSIGN;
+import Classes.AnalisadorSintatico.Automatos.DATA;
 import Classes.AnalisadorSintatico.Automatos.EXP;
+import Classes.AnalisadorSintatico.Automatos.PRINT;
 import Classes.AnalisadorSintatico.ResultadoAnalise;
 import Classes.Memoria;
 import Classes.Token;
@@ -83,9 +85,7 @@ public class TesteSintaxe {
         ControleSintaxe.InicializarAutomatos();
 
 
-
-
-        ResultadoAnalise a = ASSIGN.automato.ExecutarAutomato(Memoria.TokensReclassificados.get(1));
+        ResultadoAnalise a = DATA.automato.ExecutarAutomato(Memoria.TokensReclassificados.get(0));
 
         System.out.println();
 

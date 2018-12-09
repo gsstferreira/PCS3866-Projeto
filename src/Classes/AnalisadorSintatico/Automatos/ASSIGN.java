@@ -9,7 +9,7 @@ public abstract class ASSIGN {
 
     public static Automato automato;
 
-    // configura os autômato ASSIGN
+    // configura o autômato ASSIGN
     public static void InicializarAutomato(Automato exp) {
 
         Transicao t;
