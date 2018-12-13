@@ -1,7 +1,6 @@
-package Metodos;
+package Lexico.Metodos;
 
 import Classes.Token;
-import Motores.ControleMotores;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,20 +8,14 @@ import java.util.List;
 public abstract class CategorizadorToken {
 
     private static List<String> OPERADORES_SIMPLES = new ArrayList<>();
-    private static List<String> OPERADORES_COMPLETOS = new ArrayList<>();
-    private static List<String> PREDEFINIDOS = new ArrayList<>();
+    private static List<String> OPERADORES_COMP = new ArrayList<>();
+    private static List<String> OPERADORES = new ArrayList<>();
     private static List<String> RESERVADOS = new ArrayList<>();
     private static List<String> RESERVADOS_SIMPLES = new ArrayList<>();
     private static List<String> SINALIZADORES = new ArrayList<>();
 
     // inicializa as listas contendo tokens válidos para linguagem BASIC
     public static void InicializaRecategorizador() {
-
-        PREDEFINIDOS.add("SIN");        PREDEFINIDOS.add("COS");
-        PREDEFINIDOS.add("TAN");        PREDEFINIDOS.add("ATN");
-        PREDEFINIDOS.add("EXP");        PREDEFINIDOS.add("SQR");
-        PREDEFINIDOS.add("ABS");        PREDEFINIDOS.add("LOG");
-        PREDEFINIDOS.add("INT");        PREDEFINIDOS.add("RND");
 
         RESERVADOS_SIMPLES.add("GO");   RESERVADOS_SIMPLES.add("TO");
 
@@ -39,12 +32,15 @@ public abstract class CategorizadorToken {
 
         OPERADORES_SIMPLES.add(">");    OPERADORES_SIMPLES.add("<");
 
-        OPERADORES_COMPLETOS.add("+");  OPERADORES_COMPLETOS.add("-");
-        OPERADORES_COMPLETOS.add("*");  OPERADORES_COMPLETOS.add("/");
-        OPERADORES_COMPLETOS.add("<>"); OPERADORES_COMPLETOS.add("=");
-        OPERADORES_COMPLETOS.add("^");  OPERADORES_COMPLETOS.add("(");
-        OPERADORES_COMPLETOS.add(")");
+        OPERADORES.add("+");            OPERADORES.add("-");
+        OPERADORES.add("*");            OPERADORES.add("/");
+        OPERADORES.add("^");
 
+        OPERADORES_COMP.add("<>");      OPERADORES_COMP.add("=");
+        OPERADORES_COMP.add(">");       OPERADORES_COMP.add("<");
+        OPERADORES_COMP.add("<=");      OPERADORES_COMP.add(">=");
+
+        SINALIZADORES.add("(");         SINALIZADORES.add(")");
         SINALIZADORES.add(",");         SINALIZADORES.add(":");
     }
 
@@ -53,36 +49,25 @@ public abstract class CategorizadorToken {
 
         String s = t1.Token.toUpperCase();
 
-        if(PREDEFINIDOS.contains(s)) { return Token.PREDEFINIDO; }
-
-        else if(RESERVADOS_SIMPLES.contains(s)) { return Token.LER_PROXIMO; }
+        if(RESERVADOS_SIMPLES.contains(s)) { return Token.LER_PROXIMO; }
 
         else if(RESERVADOS.contains(s)) { return Token.RESERVADO; }
 
         else if(OPERADORES_SIMPLES.contains(s)) { return Token.LER_PROXIMO; }
 
-        else if(OPERADORES_COMPLETOS.contains(s)) { return Token.OPERADOR; }
+        else if(OPERADORES.contains(s)) { return Token.OPERADOR; }
 
-        else if(s.chars().allMatch(Character::isLetter)){ return Token.IDENTIFICADOR; }
+        else if(OPERADORES_COMP.contains(s)) { return Token.OPERADOR_COMPARADOR; }
+
+        else if(SINALIZADORES.contains(s)) { return Token.OPERADOR_SINALIZADOR; }
 
         else if(s.matches("[A-Z]\\d?")) { return Token.IDENTIFICADOR; }
 
         else if(s.chars().allMatch(Character::isDigit)) { return Token.NUMERO; }
 
-        else if(s.matches("\\d+(.\\d+)?(E[+\\-]\\d)?")) {
-            return Token.NUMERO;
-        }
+        else if(s.matches("\\d+")) { return Token.NUMERO; }
 
-        else if(SINALIZADORES.contains(s)) { return Token.SINALIZADOR; }
-
-        else if(s.startsWith("\"")) {
-            if(s.endsWith("\"")) {
-                return Token.STRING;
-            }
-            else {
-                return Token.INVALIDO;
-            }
-        }
+        else if(s.startsWith("\"") && s.endsWith("\"")) { return Token.STRING; }
 
         else { return Token.INVALIDO; }
     }
@@ -97,11 +82,11 @@ public abstract class CategorizadorToken {
 
         if(RESERVADOS.contains(s3)){ return Token.RESERVADO; }
 
-        else if(OPERADORES_COMPLETOS.contains(s3)){ return Token.OPERADOR; }
+        else if(OPERADORES_COMP.contains(s3)){ return Token.OPERADOR_COMPARADOR; }
 
         else if(RESERVADOS.contains(s1)){ return Token.SALVAR_SIMPLES_RESERVADO; }
 
-        else if(OPERADORES_COMPLETOS.contains(s1)){ return Token.SALVAR_SIMPLES_OPERADOR; }
+        else if(OPERADORES_COMP.contains(s1)){ return Token.SALVAR_SIMPLES_OPERADOR; }
 
         else { return Token.INVALIDO; }
     }

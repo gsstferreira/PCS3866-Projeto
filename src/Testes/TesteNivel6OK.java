@@ -4,9 +4,9 @@ import Classes.AnalisadorSintatico.Automatos.EXP;
 import Classes.AnalisadorSintatico.ResultadoAnalise;
 import Classes.Memoria;
 import Classes.Token;
-import Metodos.CategorizadorToken;
+import Lexico.Metodos.CategorizadorToken;
 import Metodos.Geral;
-import Motores.*;
+import Lexico.Motores.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class TesteNivel6OK {
         }
 
         if(ControleMotores.ErroDeLeitura) {
-            Geral.PrintErro();
+            Geral.PrintErro(ControleMotores.DescricaoErro);
             return;
         }
 
@@ -67,7 +67,7 @@ public class TesteNivel6OK {
         }
 
         if(ControleMotores.ErroDeLeitura) {
-            Geral.PrintErro();
+            Geral.PrintErro(ControleMotores.DescricaoErro);
             return;
         }
 

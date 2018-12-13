@@ -1,9 +1,9 @@
-package Motores;
+package Lexico.Motores;
 
-import Classes.Evento;
+import Classes.AnalisadorLexico.Evento;
 import Classes.Memoria;
 import Classes.Token;
-import Metodos.CategorizadorToken;
+import Lexico.Metodos.CategorizadorToken;
 
 import java.util.ArrayList;
 
@@ -70,6 +70,7 @@ public abstract class Nivel6 {
     private static void SalvarToken(Token t, int tipo) {
 
         Token tr = new Token();
+        tr.Linha = t.Linha;
         tr.Token = t.Token.toUpperCase();
 
         switch (tipo){
@@ -98,14 +99,14 @@ public abstract class Nivel6 {
                 Memoria.TokensReclassificados.get(NumeroLinha).add(tr);
                 ultimoToken = null;
                 break;
-            case Token.PREDEFINIDO:
-                tr.Tipo = Token.PREDEFINIDO;
+            case Token.OPERADOR_COMPARADOR:
+                tr.Tipo = Token.OPERADOR_COMPARADOR;
                 Memoria.TokensReclassificados.get(NumeroLinha).add(tr);
                 ultimoToken = null;
                 break;
             case Token.SALVAR_SIMPLES_OPERADOR:
                 tr.Token = ultimoToken.Token.toUpperCase();
-                tr.Tipo = Token.OPERADOR;
+                tr.Tipo = Token.OPERADOR_COMPARADOR;
                 ultimoToken = null;
                 Memoria.TokensReclassificados.get(NumeroLinha).add(tr);
                 break;
@@ -125,8 +126,8 @@ public abstract class Nivel6 {
                 ultimoToken = null;
                 Memoria.TokensReclassificados.get(NumeroLinha).add(tr);
                 break;
-            case Token.SINALIZADOR:
-                tr.Tipo = Token.SINALIZADOR;
+            case Token.OPERADOR_SINALIZADOR:
+                tr.Tipo = Token.OPERADOR_SINALIZADOR;
                 ultimoToken = null;
                 Memoria.TokensReclassificados.get(NumeroLinha).add(tr);
                 break;

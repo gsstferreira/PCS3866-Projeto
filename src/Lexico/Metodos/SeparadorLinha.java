@@ -1,7 +1,6 @@
-package Metodos;
+package Lexico.Metodos;
 
-import Motores.ControleMotores;
-import Motores.Nivel1;
+import Lexico.Motores.Nivel1;
 
 import java.io.FileInputStream;
 

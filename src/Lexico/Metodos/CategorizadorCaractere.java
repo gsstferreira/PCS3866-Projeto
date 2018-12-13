@@ -1,6 +1,6 @@
-package Metodos;
+package Lexico.Metodos;
 
-import Classes.Caractere;
+import Classes.AnalisadorLexico.Caractere;
 
 public abstract class CategorizadorCaractere {
 

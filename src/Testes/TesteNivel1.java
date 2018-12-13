@@ -1,14 +1,11 @@
 package Testes;
 
 import Classes.Memoria;
-import Classes.Token;
-import Metodos.CategorizadorToken;
 import Metodos.Geral;
-import Motores.*;
+import Lexico.Motores.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
 
 public class TesteNivel1 {
 
@@ -27,7 +24,7 @@ public class TesteNivel1 {
         }
 
         if(ControleMotores.ErroDeLeitura) {
-            Geral.PrintErro();
+            Geral.PrintErro(ControleMotores.DescricaoErro);
             return;
         }
 

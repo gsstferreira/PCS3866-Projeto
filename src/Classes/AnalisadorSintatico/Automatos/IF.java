@@ -38,8 +38,8 @@ public abstract class IF {
         if2.addTransicao(t);
 
         t = new Transicao();
-        t.TipoTransiscao = Transicao.REGEX;
-        t.valorTransicao = "(<|>|<=|>=|=|<>)";
+        t.TipoTransiscao = Transicao.TOKEN;
+        t.TokenTransicao = Token.OPERADOR_COMPARADOR;
         t.ProximoEstado = if4;
         if3.addTransicao(t);
 
@@ -58,6 +58,12 @@ public abstract class IF {
         t = new Transicao();
         t.TipoTransiscao = Transicao.TOKEN;
         t.TokenTransicao = Token.IDENTIFICADOR;
+        t.ProximoEstado = if7;
+        if6.addTransicao(t);
+
+        t = new Transicao();
+        t.TipoTransiscao = Transicao.TOKEN;
+        t.TokenTransicao = Token.STOP;
         t.ProximoEstado = if7;
         if6.addTransicao(t);
 

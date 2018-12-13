@@ -1,7 +1,7 @@
-package Motores;
+package Lexico.Motores;
 
-import Classes.Evento;
-import Classes.MotorEvento;
+import Classes.AnalisadorLexico.Evento;
+import Classes.AnalisadorLexico.MotorEvento;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;

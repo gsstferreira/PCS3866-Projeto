@@ -17,11 +17,10 @@ public class Automato {
     public ResultadoAnalise ExecutarAutomato(List<Token> tokens) {
 
         boolean Erro = false;
-
-        int parenteses = 0;
         Estado atual = EstadoInicial;
 
         List<Token> s = new ArrayList<>(tokens);
+        List<Token> TokenErro = new ArrayList<>(tokens);
 
         while(!atual.Final &&  !Erro) {
 
@@ -42,13 +41,6 @@ public class Automato {
 
                 else if(t.TipoTransiscao == Transicao.LITERAL){
                     if(s.get(0).Token.equals(t.valorTransicao)) {
-
-                        if(t.valorTransicao.equals("(")) {
-                            parenteses ++;
-                        }
-                        else if (t.valorTransicao.equals(")")) {
-                            parenteses--;
-                        }
 
                         atual = t.ProximoEstado;
                         s.remove(0);
@@ -94,14 +86,10 @@ public class Automato {
         }
 
         if(Erro) {
-            return new ResultadoAnalise(s,false);
+            TokenErro = s;
+            return new ResultadoAnalise(TokenErro,false);
         }
         else {
-
-            if(parenteses != 0) {
-                return new ResultadoAnalise(s,false);
-            }
-
             return new ResultadoAnalise(s,true);
         }
     }

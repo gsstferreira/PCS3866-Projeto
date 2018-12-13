@@ -1,19 +1,17 @@
 package Testes;
 
-import Classes.AnalisadorSintatico.Automatos.ASSIGN;
-import Classes.AnalisadorSintatico.Automatos.DATA;
-import Classes.AnalisadorSintatico.Automatos.EXP;
-import Classes.AnalisadorSintatico.Automatos.PRINT;
 import Classes.AnalisadorSintatico.ResultadoAnalise;
 import Classes.Memoria;
 import Classes.Token;
-import Metodos.CategorizadorToken;
+import GeradorCodigo.Metodos.RPNtoMVN;
+import Lexico.Metodos.CategorizadorToken;
 import Metodos.Geral;
-import Motores.*;
+import Lexico.Motores.*;
 import Sintaxe.ControleSintaxe;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TesteSintaxe {
@@ -54,7 +52,7 @@ public class TesteSintaxe {
         }
 
         if(ControleMotores.ErroDeLeitura) {
-            Geral.PrintErro();
+            Geral.PrintErro(ControleMotores.DescricaoErro);
             return;
         }
 
@@ -71,7 +69,7 @@ public class TesteSintaxe {
         }
 
         if(ControleMotores.ErroDeLeitura) {
-            Geral.PrintErro();
+            Geral.PrintErro(ControleMotores.DescricaoErro);
             return;
         }
 
@@ -83,21 +81,119 @@ public class TesteSintaxe {
         }
 
         ControleSintaxe.InicializarAutomatos();
-
-
-        ResultadoAnalise a = DATA.automato.ExecutarAutomato(Memoria.TokensReclassificados.get(0));
-
+        System.out.println();
         System.out.println();
 
-        if(a.Ok) {
-            System.out.println("Sucesso linha");
-        }
-        else {
-            System.out.println("Falha linha");
-            for (Token t:a.linhaRestante) {
-                Geral.PrintToken(t);
-            }
+        List<Token> programa = new ArrayList<>();
+
+        for (List<Token> lt:Memoria.TokensReclassificados) {
+            programa.addAll(lt);
         }
 
+        ResultadoAnalise a = ControleSintaxe.VerificarSintaxe(programa);
+
+        if(a.Ok && a.linhaRestante.isEmpty()) {
+            Geral.PrintOK("Análise Sintática OK");
+        }
+        else {
+            int linha = a.linhaRestante.get(0).Linha;
+            Geral.PrintErro(String.format("Linha %d: Erro de sintaxe: %s",linha + 1,Geral.FormatStringLinha(Memoria.Linhas.get(linha))));
+        }
+
+
+        List<Token> listaExp = new ArrayList<>();
+
+        Token x = new Token();
+        x.Tipo = Token.IDENTIFICADOR;
+        x.Token = "a";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.IDENTIFICADOR;
+        x.Token = "b";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.IDENTIFICADOR;
+        x.Token = "c";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.OPERADOR;
+        x.Token = "*";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.IDENTIFICADOR;
+        x.Token = "d";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.IDENTIFICADOR;
+        x.Token = "e";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.OPERADOR;
+        x.Token = "*";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.OPERADOR;
+        x.Token = "-";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.IDENTIFICADOR;
+        x.Token = "f";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.OPERADOR;
+        x.Token = "*";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.IDENTIFICADOR;
+        x.Token = "g";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.OPERADOR;
+        x.Token = "/";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.OPERADOR;
+        x.Token = "-";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.IDENTIFICADOR;
+        x.Token = "h";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.IDENTIFICADOR;
+        x.Token = "i";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.OPERADOR;
+        x.Token = "/";
+        listaExp.add(x);
+
+        x = new Token();
+        x.Tipo = Token.OPERADOR;
+        x.Token = "+";
+        listaExp.add(x);
+
+
+        String s = RPNtoMVN.TransformarExpressaoRPN(listaExp);
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println(s);
     }
 }

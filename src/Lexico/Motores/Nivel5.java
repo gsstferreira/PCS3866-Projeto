@@ -1,10 +1,9 @@
-package Motores;
+package Lexico.Motores;
 
-import Classes.Evento;
+import Classes.AnalisadorLexico.Evento;
 import Classes.Memoria;
-import Classes.Caractere;
+import Classes.AnalisadorLexico.Caractere;
 import Classes.Token;
-import Sintaxe.ControleSintaxe;
 
 import java.util.ArrayList;
 
@@ -31,6 +30,7 @@ public abstract class Nivel5 {
             if(s != null) {
 
                 Token token = new Token();
+                token.Linha = NumeroLinha;
                 Evento e2;
                 NumeroChar++;
                 switch(s.Tipo) {
@@ -73,7 +73,7 @@ public abstract class Nivel5 {
 
                     case Caractere.ESPECIAL:
 
-                        if (s.Caractere == '"') {
+                        if (s.Caractere == '\"') {
                             if(inString) {
                                 TokenBuilder.append(s.Caractere);
                                 token.Token = TokenBuilder.toString();
@@ -83,39 +83,34 @@ public abstract class Nivel5 {
                             else {
                                 token.Token = TokenBuilder.toString();
                                 TokenBuilder = new StringBuilder();
-                                TokenBuilder.append(s.Caractere);
                                 inString = true;
+                                TokenBuilder.append(s.Caractere);
                             }
-                            Memoria.Tokens.get(NumeroLinha).add(token);
-                            e2 = new Evento(Evento.RECLASSIFICAR_TOKENS,tempo,tempo+1);
-                            ControleMotores.AcessoMotor(6).AdicionarEvento(e2);
+                            if(!token.Token.equals("")) {
+                                Memoria.Tokens.get(NumeroLinha).add(token);
+                                e2 = new Evento(Evento.RECLASSIFICAR_TOKENS,tempo,tempo+1);
+                                ControleMotores.AcessoMotor(6).AdicionarEvento(e2);
+                            }
                         }
                         else if(inString) {
                             TokenBuilder.append(s.Caractere);
                         }
                         else {
 
-                            if(s.Caractere == '.' && TokenBuilder.toString().matches("\\d+")) {
-                                TokenBuilder.append(s.Caractere);
-                            }
-                            else if((s.Caractere == '+' || s.Caractere == '-') && TokenBuilder.toString().matches("\\d+(.\\d+)?E")) {
-                                TokenBuilder.append(s.Caractere);
-                            }
-                            else {
-                                token.Token = TokenBuilder.toString();
-                                if(!token.Token.equals("")) {
-                                    Memoria.Tokens.get(NumeroLinha).add(token);
-                                    TokenBuilder = new StringBuilder();
-                                    e2 = new Evento(Evento.RECLASSIFICAR_TOKENS,tempo,tempo+1);
-                                    ControleMotores.AcessoMotor(6).AdicionarEvento(e2);
-                                }
-
-                                Token token2 = new Token();
-                                token2.Token = String.format("%c",s.Caractere);
-                                Memoria.Tokens.get(NumeroLinha).add(token2);
+                            token.Token = TokenBuilder.toString();
+                            if(!token.Token.equals("")) {
+                                Memoria.Tokens.get(NumeroLinha).add(token);
+                                TokenBuilder = new StringBuilder();
                                 e2 = new Evento(Evento.RECLASSIFICAR_TOKENS,tempo,tempo+1);
                                 ControleMotores.AcessoMotor(6).AdicionarEvento(e2);
                             }
+
+                            Token token2 = new Token();
+                            token2.Linha = NumeroLinha;
+                            token2.Token = String.format("%c",s.Caractere);
+                            Memoria.Tokens.get(NumeroLinha).add(token2);
+                            e2 = new Evento(Evento.RECLASSIFICAR_TOKENS,tempo,tempo+1);
+                            ControleMotores.AcessoMotor(6).AdicionarEvento(e2);
                         }
 
                         break;

@@ -1,8 +1,8 @@
-package Motores;
+package Lexico.Motores;
 
-import Classes.Evento;
+import Classes.AnalisadorLexico.Evento;
 import Classes.Memoria;
-import Classes.Caractere;
+import Classes.AnalisadorLexico.Caractere;
 
 import java.util.ArrayList;
 import java.util.List;

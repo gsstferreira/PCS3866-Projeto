@@ -1,5 +1,7 @@
 package Classes;
 
+import Classes.AnalisadorLexico.Caractere;
+
 import java.util.ArrayList;
 import java.util.List;
 

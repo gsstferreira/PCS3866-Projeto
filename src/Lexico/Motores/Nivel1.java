@@ -1,8 +1,8 @@
-package Motores;
+package Lexico.Motores;
 
-import Classes.Evento;
+import Classes.AnalisadorLexico.Evento;
 import Classes.Memoria;
-import Metodos.SeparadorLinha;
+import Lexico.Metodos.SeparadorLinha;
 
 public abstract class Nivel1 {
 

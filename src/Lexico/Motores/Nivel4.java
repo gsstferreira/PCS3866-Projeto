@@ -1,9 +1,9 @@
-package Motores;
+package Lexico.Motores;
 
-import Classes.Evento;
+import Classes.AnalisadorLexico.Evento;
 import Classes.Memoria;
-import Classes.Caractere;
-import Metodos.CategorizadorCaractere;
+import Classes.AnalisadorLexico.Caractere;
+import Lexico.Metodos.CategorizadorCaractere;
 
 public abstract class Nivel4 {
 

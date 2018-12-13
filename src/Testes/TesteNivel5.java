@@ -3,7 +3,7 @@ package Testes;
 import Classes.Memoria;
 import Classes.Token;
 import Metodos.Geral;
-import Motores.*;
+import Lexico.Motores.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class TesteNivel5 {
         }
 
         if(ControleMotores.ErroDeLeitura) {
-            Geral.PrintErro();
+            Geral.PrintErro(ControleMotores.DescricaoErro);
             return;
         }
 

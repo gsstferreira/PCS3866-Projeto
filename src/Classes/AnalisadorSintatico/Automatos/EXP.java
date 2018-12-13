@@ -36,8 +36,8 @@ public abstract class EXP {
         exp1.addTransicao(t);
 
         t = new Transicao();
-        t.TipoTransiscao = Transicao.REGEX;
-        t.valorTransicao = "[+\\-*/]";
+        t.TipoTransiscao = Transicao.TOKEN;
+        t.TokenTransicao = Token.OPERADOR;
         t.ProximoEstado = exp3;
         exp2.addTransicao(t);
 
@@ -91,12 +91,6 @@ public abstract class EXP {
         t.TipoTransiscao = Transicao.LITERAL;
         t.valorTransicao = "FN";
         t.ProximoEstado = eb3;
-        eb1.addTransicao(t);
-
-        t = new Transicao();
-        t.TipoTransiscao = Transicao.TOKEN;
-        t.TokenTransicao = Token.PREDEFINIDO;
-        t.ProximoEstado = eb5;
         eb1.addTransicao(t);
 
         t = new Transicao();

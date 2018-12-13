@@ -1,4 +1,4 @@
-package Classes;
+package Classes.AnalisadorLexico;
 
 public class Evento {
     public int Tipo;

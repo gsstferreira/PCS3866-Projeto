@@ -1,5 +1,5 @@
-        LET X = 12.52E+3
-        LET X = SIN(((200 + X) / 233)*25)
+        LET X = 12
+        LET X = ((200 + X) / 233)*25
         LET A3 = 0
 LOOP:   LET A3 = A3 + X
         PRINT X, A3
@@ -7,7 +7,7 @@ LOOP:   LET A3 = A3 + X
         LET X = X - 1
         NEXT Y
         PRINT "Imprimindo uma string!"
-        DEF FN G(X) = INT(X) * X ^ 2
-        IF X = 0 THEN STOP
+        DEF FN G(X) = X * X ^ 2
+        IF X <> 0 THEN STOP
         GO TO LOOP
         END

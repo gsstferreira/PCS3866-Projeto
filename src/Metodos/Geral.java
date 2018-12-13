@@ -1,8 +1,7 @@
 package Metodos;
 
-import Classes.Caractere;
+import Classes.AnalisadorLexico.Caractere;
 import Classes.Token;
-import Motores.ControleMotores;
 
 public abstract class Geral {
 
@@ -16,9 +15,27 @@ public abstract class Geral {
     private static final String ANSI_CYAN = "\u001B[36m";
     private static final String ANSI_WHITE = "\u001B[37m";
 
+    public static String FormatStringLinha(String linha) {
 
-    public static void PrintErro() {
-        String s = String.format("%s %s",ANSI_RED,ControleMotores.DescricaoErro);
+        String s = linha;
+
+        while(s.startsWith(" ")) {
+            s = s.substring(1);
+        }
+
+        s = s.replace("\n","");
+        s = s.replace("\r","");
+
+        return s;
+    }
+
+    public static void PrintErro(String linha) {
+        String s = String.format("%s%s",ANSI_RED,linha);
+        System.out.println(s);
+    }
+
+    public static void PrintOK(String linha) {
+        String s = String.format("%s%s",ANSI_GREEN,linha);
         System.out.println(s);
     }
 
@@ -27,9 +44,6 @@ public abstract class Geral {
         String s = "";
 
         switch (t.Tipo) {
-            case Token.PREDEFINIDO:
-                s = String.format("%s%s",ANSI_PURPLE,t.Token);
-                break;
             case Token.END:
                 s = String.format("%s%s",ANSI_BLUE,t.Token);
                 break;
@@ -66,10 +80,12 @@ public abstract class Geral {
                 else {
                     s = String.format("%s %s ",ANSI_RESET,t.Token);
                 }
-
                 break;
-            case Token.SINALIZADOR:
-                s = String.format("%s%s ",ANSI_RESET,t.Token);
+            case Token.OPERADOR_SINALIZADOR:
+                s = String.format("%s%s",ANSI_RESET,t.Token);
+                break;
+            case Token.OPERADOR_COMPARADOR:
+                s = String.format("%s %s ",ANSI_RESET,t.Token);
                 break;
         }
 
