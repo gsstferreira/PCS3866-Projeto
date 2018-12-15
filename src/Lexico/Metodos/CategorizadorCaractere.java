@@ -4,19 +4,14 @@ import Classes.AnalisadorLexico.Caractere;
 
 public abstract class CategorizadorCaractere {
 
-    private static final String ESPECIAIS = "\"*()-=+/<>,.:^";
+    private static final String ESPECIAIS = "\"*()-=+/<>,.:";
     private static final String CONTROLES = "\n\r";
 
     public static void FiltragemSimbolo(Caractere s) {
 
         char c = s.Caractere;
 
-        if(c == ' ' || c == '\t') {
-            s.Util = false;
-        }
-        else {
-            s.Util = true;
-        }
+        s.Util = c != ' ' && c != '\t';
     }
 
     public static void IdentificarSimbolo(Caractere s) {

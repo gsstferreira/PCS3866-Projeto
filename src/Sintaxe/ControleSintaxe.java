@@ -5,15 +5,16 @@ import Classes.AnalisadorSintatico.Automatos.*;
 import Classes.AnalisadorSintatico.ResultadoAnalise;
 import Classes.Memoria;
 import Classes.Token;
+import Metodos.Geral;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ControleSintaxe {
 
-    public static boolean ErroSintaxe = false;
     public static String DescricaoErro;
     private static Automato automatoLinha;
+
     public static void InicializarAutomatos() {
 
         EXP.InicializarAutomato();
@@ -54,4 +55,38 @@ public abstract class ControleSintaxe {
     public static ResultadoAnalise VerificarSintaxe(List<Token> linha) {
         return automatoLinha.ExecutarAutomato(linha);
     }
+
+    public static boolean AnaliseSintatica() {
+
+        InicializarAutomatos();
+
+        List<Token> programa = new ArrayList<>();
+
+        for (List<Token> lt : Memoria.TokensReclassificados) {
+            programa.addAll(lt);
+        }
+
+        ResultadoAnalise a = VerificarSintaxe(programa);
+
+        if (!a.Ok || !a.linhaRestante.isEmpty()) {
+            int linha = a.linhaRestante.get(0).Linha;
+            DescricaoErro = String.format("Linha %d: Erro de sintaxe: %s", linha + 1, Geral.FormatStringLinha(Memoria.Linhas.get(linha)));
+            return false;
+        }
+
+
+        if (!TabelaSimbolos.PreencherTabela(Memoria.TokensReclassificados)) {
+            return false;
+        }
+
+        if(!TabelaSimbolos.VerificarReferencias()) {
+            return false;
+        }
+
+        Memoria.TokensReclassificados = AdicaoRedundancia.AdicionarRedundanciaZero(Memoria.TokensReclassificados);
+        Memoria.TokensReclassificados = AdicaoRedundancia.AdcionarRedundanciaStep(Memoria.TokensReclassificados);
+
+        return true;
+    }
+
 }

@@ -10,7 +10,7 @@ public abstract class RPNtoMVN {
 
     public static String TransformarExpressaoRPN(List<Token> exp_rpn) {
 
-        Stack<String> stack = new Stack<>();
+        int stack = 0;
         List<Token> tl = new ArrayList<>(exp_rpn);
         StringBuilder sb = new StringBuilder();
 
@@ -19,56 +19,86 @@ public abstract class RPNtoMVN {
             Token t = tl.get(i);
             Token t2 = tl.get(i+1);
 
-            if(t.Tipo == Token.IDENTIFICADOR || t2.Tipo == Token.NUMERO) {
+            if(t.Tipo == Token.IDENTIFICADOR) {
 
                 if(t2.Tipo == Token.IDENTIFICADOR || t2.Tipo == Token.NUMERO) {
-                    sb.append(String.format("LD [%s]\nMM [P%d]\n",t.Token,stack.size()));
-                    stack.push("");
+                    sb.append(String.format("LD  [%s]\nMM  [R%d]\n",t.Token,stack));
+                    stack++;
                 }
                 else if(t2.Tipo == Token.OPERADOR){
 
-                    stack.pop();
+                    stack--;
 
                     switch (t2.Token) {
 
                         case "+":
-                            sb.append(String.format("ADD [%s]\nMM [P%d]\n",t.Token,stack.size()));
+                            sb.append(String.format("ADD [%s]\nMM  [R%d]\n",t.Token,stack));
                             break;
                         case "-":
-                            sb.append(String.format("SUB [%s]\nMM [P%d]\n",t.Token,stack.size()));
+                            sb.append(String.format("SUB [%s]\nMM  [R%d]\n",t.Token,stack));
                             break;
                         case "*":
-                            sb.append(String.format("MUL [%s]\nMM [P%d]\n",t.Token,stack.size()));
+                            sb.append(String.format("MUL [%s]\nMM  [R%d]\n",t.Token,stack));
                             break;
                         case "/":
-                            sb.append(String.format("DIV [%s]\nMM [P%d]\n",t.Token,stack.size()));
+                            sb.append(String.format("DIV [%s]\nMM  [R%d]\n",t.Token,stack));
                             break;
                     }
-                    stack.push("");
+                    stack++;
                 }
 
             }
-            else if(t.Tipo == Token.OPERADOR) {
-                if(t2.Tipo == Token.OPERADOR) {
+            else if(t.Tipo == Token.NUMERO) {
 
-                    stack.pop();
+                if(t2.Tipo == Token.IDENTIFICADOR || t2.Tipo == Token.NUMERO) {
+                    sb.append(String.format("LV %s\nMM  [R%d]\n",t.Token,stack));
+                    stack++;
+                }
+                else if(t2.Tipo == Token.OPERADOR){
 
-                    int x = stack.size();
-                    sb.append(String.format("LD [P%d]\n",x - 1));
+                    stack--;
 
                     switch (t2.Token) {
 
                         case "+":
-                            sb.append(String.format("ADD [P%d]\nMM [P%d]\n",x,x-1));
+                            sb.append(String.format("ADD [%s]\nMM  [R%d]\n",t.Token,stack));
                             break;
                         case "-":
-                            sb.append(String.format("SUB [P%d]\nMM [P%d]\n",x,x-1));
+                            sb.append(String.format("SUB [%s]\nMM  [R%d]\n",t.Token,stack));
                             break;
                         case "*":
-                            sb.append(String.format("MUL [P%d]\nMM [P%d]\n",x,x-1));
+                            sb.append(String.format("MUL [%s]\nMM  [R%d]\n",t.Token,stack));
                             break;
                         case "/":
-                            sb.append(String.format("DIV [P%d]\nMM [P%d]\n",x,x-1));
+                            sb.append(String.format("DIV [%s]\nMM  [R%d]\n",t.Token,stack));
+                            break;
+                    }
+                    stack++;
+                }
+
+            }
+
+            else if(t.Tipo == Token.OPERADOR) {
+                if(t2.Tipo == Token.OPERADOR) {
+
+                    stack--;
+
+                    int x = stack;
+                    sb.append(String.format("LD  [R%d]\n",x - 1));
+
+                    switch (t2.Token) {
+
+                        case "+":
+                            sb.append(String.format("ADD [R%d]\nMM  [R%d]\n",x,x-1));
+                            break;
+                        case "-":
+                            sb.append(String.format("SUB [R%d]\nMM  [R%d]\n",x,x-1));
+                            break;
+                        case "*":
+                            sb.append(String.format("MUL [R%d]\nMM  [R%d]\n",x,x-1));
+                            break;
+                        case "/":
+                            sb.append(String.format("DIV [R%d]\nMM  [R%d]\n",x,x-1));
                             break;
                     }
                 }

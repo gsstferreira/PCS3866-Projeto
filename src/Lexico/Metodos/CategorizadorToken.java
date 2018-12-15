@@ -27,14 +27,13 @@ public abstract class CategorizadorToken {
         RESERVADOS.add("DATA");         RESERVADOS.add("FOR");
         RESERVADOS.add("FOR");          RESERVADOS.add("TO");
         RESERVADOS.add("STEP");         RESERVADOS.add("NEXT");
-        RESERVADOS.add("DIM");          RESERVADOS.add("REM");
-        RESERVADOS.add("GOSUB");        RESERVADOS.add("RETURN");
+        RESERVADOS.add("REM");          RESERVADOS.add("GOSUB");
+        RESERVADOS.add("RETURN");
 
         OPERADORES_SIMPLES.add(">");    OPERADORES_SIMPLES.add("<");
 
         OPERADORES.add("+");            OPERADORES.add("-");
         OPERADORES.add("*");            OPERADORES.add("/");
-        OPERADORES.add("^");
 
         OPERADORES_COMP.add("<>");      OPERADORES_COMP.add("=");
         OPERADORES_COMP.add(">");       OPERADORES_COMP.add("<");

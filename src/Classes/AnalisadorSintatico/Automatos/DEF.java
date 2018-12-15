@@ -41,7 +41,7 @@ public abstract class DEF {
 
         t = new Transicao();
         t.TipoTransiscao = Transicao.REGEX;
-        t.valorTransicao = "[A-Z]";
+        t.valorTransicao = "[A-VY-Z]";
         t.ProximoEstado = def4;
         def3.addTransicao(t);
 
@@ -52,8 +52,8 @@ public abstract class DEF {
         def4.addTransicao(t);
 
         t = new Transicao();
-        t.TipoTransiscao = Transicao.TOKEN;
-        t.TokenTransicao = Token.IDENTIFICADOR;
+        t.TipoTransiscao = Transicao.LITERAL;
+        t.valorTransicao = "X";
         t.ProximoEstado = def6;
         def5.addTransicao(t);
 

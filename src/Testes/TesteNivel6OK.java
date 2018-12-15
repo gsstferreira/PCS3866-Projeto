@@ -77,28 +77,5 @@ public class TesteNivel6OK {
             }
             System.out.println();
         }
-
-        EXP.InicializarAutomato();
-
-
-        List<Token> analisar = Memoria.TokensReclassificados.get(1);
-        analisar.remove(0);
-        analisar.remove(0);
-        analisar.remove(0);
-
-        ResultadoAnalise a = EXP.automato.ExecutarAutomato(analisar);
-
-        System.out.println();
-
-        if(a.Ok) {
-            System.out.println("Sucesso linha");
-        }
-        else {
-            System.out.println("Falha linha");
-            for (Token t:a.linhaRestante) {
-                Geral.PrintToken(t);
-            }
-        }
-
     }
 }
