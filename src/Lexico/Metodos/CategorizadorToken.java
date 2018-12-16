@@ -23,8 +23,7 @@ public abstract class CategorizadorToken {
         RESERVADOS.add("GOTO");         RESERVADOS.add("LET");
         RESERVADOS.add("END");          RESERVADOS.add("STOP");
         RESERVADOS.add("FN");           RESERVADOS.add("PRINT");
-        RESERVADOS.add("DEF");          RESERVADOS.add("READ");
-        RESERVADOS.add("DATA");         RESERVADOS.add("FOR");
+        RESERVADOS.add("DEF");          RESERVADOS.add("FOR");
         RESERVADOS.add("FOR");          RESERVADOS.add("TO");
         RESERVADOS.add("STEP");         RESERVADOS.add("NEXT");
         RESERVADOS.add("REM");          RESERVADOS.add("GOSUB");

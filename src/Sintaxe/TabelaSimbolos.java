@@ -158,15 +158,15 @@ public abstract class TabelaSimbolos {
 
             Token t = l.get(0);
 
-            if(t.Token.equals("DATA")) {
-                ControleSintaxe.hasDATA++;
-            }
-            else if(t.Token.equals("READ")) {
-                ControleSintaxe.hasREAD = true;
-                ControleSintaxe.LinhasREAD = ControleSintaxe.LinhasREAD.concat(String.format("%d ",t.Linha));
-            }
+//            if(t.Token.equals("DATA")) {
+//                ControleSintaxe.hasDATA++;
+//            }
+//            else if(t.Token.equals("READ")) {
+//                ControleSintaxe.hasREAD = true;
+//                ControleSintaxe.LinhasREAD = ControleSintaxe.LinhasREAD.concat(String.format("%d ",t.Linha));
+//            }
 
-            else if(t.Token.equals("LET") || t.Token.equals("FOR")) {
+            if(t.Token.equals("LET") || t.Token.equals("FOR")) {
                 Token tt = l.get(1);
                 ok = AdicionarIdentificador(tt,true,Identificador.VARIAVEL);
                 l.remove(0);

@@ -1,0 +1,4 @@
+        FOR X = 0 TO 5 STEP 1
+        PRINT X
+        NEXT X
+        END

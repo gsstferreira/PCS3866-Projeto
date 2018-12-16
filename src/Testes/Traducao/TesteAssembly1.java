@@ -1,12 +1,11 @@
 package Testes.Traducao;
 
+import Classes.GeradorCodigo.LinhaAssembly;
 import Classes.GeradorCodigo.LinhaCodInter;
 import Classes.Memoria;
 import Classes.Token;
 import GeradorCodigo.ControleGerador;
 import GeradorCodigo.Metodos.CodigoIntermediario;
-import GeradorCodigo.Metodos.Simplificador;
-import GeradorCodigo.Metodos.SubstituicaoFuncoes;
 import Lexico.Metodos.CategorizadorToken;
 import Lexico.Motores.*;
 import Metodos.Geral;
@@ -14,10 +13,9 @@ import Sintaxe.ControleSintaxe;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class TesteIntermediario {
+public class TesteAssembly1 {
 
     public static void main(String[] args) {
 
@@ -26,7 +24,7 @@ public class TesteIntermediario {
 
         try {
             // busca ponteiro para arquivo com código e inicializa os motores de evento
-            ControleMotores.InicializaMotores(new FileInputStream("TestesTxt/TesteTraducaoLinguagem.txt"));
+            ControleMotores.InicializaMotores(new FileInputStream("TestesTxt/TesteTraducaoAssembly1.txt"));
         } catch (IOException e) {
             // arquivo não encontrado
             Geral.PrintNeutral("Arquivo 'teste.txt'não foi encontrado.\n");
@@ -109,9 +107,8 @@ public class TesteIntermediario {
 
         ControleGerador.ParaAssembly();
 
-        for (LinhaCodInter l: CodigoIntermediario.NovasLinhas) {
-            Geral.PrintCodigoIntermediario(l);
+        for (LinhaAssembly l:ControleGerador.codigoAssembly) {
+            Geral.PrintLinhaAssembly(l);
         }
-
     }
 }

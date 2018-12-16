@@ -1,6 +1,7 @@
 package Metodos;
 
 import Classes.AnalisadorLexico.Caractere;
+import Classes.GeradorCodigo.LinhaAssembly;
 import Classes.GeradorCodigo.LinhaCodInter;
 import Classes.Token;
 
@@ -191,13 +192,13 @@ public abstract class Geral {
 
                 System.out.print(String.format("%sMOVER %s%s%sem %s",ANSI_RESET,ANSI_CYAN,s.toString(),ANSI_RESET,l.Variaveis.get(0).Token));
                 break;
-            case LinhaCodInter.DATA:
-                System.out.print("CONSTANTES\t");
-                System.out.print(ANSI_CYAN);
-                for (Token t:l.Variaveis) {
-                    System.out.print(String.format("%s\t",t.Token));
-                }
-                break;
+//            case LinhaCodInter.DATA:
+//                System.out.print("CONSTANTES\t");
+//                System.out.print(ANSI_CYAN);
+//                for (Token t:l.Variaveis) {
+//                    System.out.print(String.format("%s\t",t.Token));
+//                }
+//                break;
             case LinhaCodInter.FOR:
                 StringBuilder s1 = new StringBuilder();
                 StringBuilder s2 = new StringBuilder();
@@ -257,16 +258,41 @@ public abstract class Geral {
             case LinhaCodInter.RETURN:
                 System.out.print(String.format("%sRETORNO DA SUBROTINA ATUAL",ANSI_RESET));
                 break;
-            case LinhaCodInter.READ:
-                System.out.print("LEITURA\t");
-                System.out.print(ANSI_CYAN);
-                for (Token t:l.Variaveis) {
-                    System.out.print(String.format("%s\t",t.Token));
-                }
-                break;
+//            case LinhaCodInter.READ:
+//                System.out.print("LEITURA\t");
+//                System.out.print(ANSI_CYAN);
+//                for (Token t:l.Variaveis) {
+//                    System.out.print(String.format("%s\t",t.Token));
+//                }
+//                break;
         }
 
         System.out.println();
+    }
+
+    public static void PrintLinhaAssembly(LinhaAssembly l) {
+
+        System.out.println(ANSI_RESET);
+        String s = "";
+
+        if(!l.Label.equals("!")) {
+            s = l.Label;
+        }
+        int i = s.length();
+        while(i <= 9) {
+            s = s.concat(" ");
+            i++;
+        }
+
+        System.out.print(String.format("%s%s %s%s",s,l.Instrucao,ANSI_YELLOW,l.Operador));
+    }
+
+    public static void PrintLinhaMaquina(LinhaAssembly l) {
+
+        System.out.println(ANSI_RESET);
+        String s = "";
+
+        System.out.print(String.format("%s%s%s%s",s,l.Instrucao,ANSI_YELLOW,l.Operador));
     }
 }
 

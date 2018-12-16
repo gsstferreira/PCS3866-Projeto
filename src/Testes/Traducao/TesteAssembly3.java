@@ -1,7 +1,9 @@
-package Testes.Sintatico;
+package Testes.Traducao;
 
+import Classes.GeradorCodigo.LinhaAssembly;
 import Classes.Memoria;
 import Classes.Token;
+import GeradorCodigo.ControleGerador;
 import Lexico.Metodos.CategorizadorToken;
 import Lexico.Motores.*;
 import Metodos.Geral;
@@ -11,7 +13,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class TesteSintaxeF5 {
+public class TesteAssembly3 {
 
     public static void main(String[] args) {
 
@@ -20,7 +22,7 @@ public class TesteSintaxeF5 {
 
         try {
             // busca ponteiro para arquivo com código e inicializa os motores de evento
-            ControleMotores.InicializaMotores(new FileInputStream("TestesTxt/TesteSintaxeF5.txt"));
+            ControleMotores.InicializaMotores(new FileInputStream("TestesTxt/TesteTraducaoAssembly3.txt"));
         } catch (IOException e) {
             // arquivo não encontrado
             Geral.PrintNeutral("Arquivo 'teste.txt'não foi encontrado.\n");
@@ -86,17 +88,25 @@ public class TesteSintaxeF5 {
             System.out.println();
         }
 
-       Geral.PrintNeutral("\nIniciando análise sintática...");
+        Geral.PrintNeutral("\nIniciando análise sintática...");
 
         boolean sintatica = ControleSintaxe.AnaliseSintatica();
 
         if(!sintatica) {
             System.out.println();
             Geral.PrintErro(ControleSintaxe.DescricaoErro);
+            return;
         }
         else {
             Geral.PrintNeutral("Análise sintática OK.\n");
         }
 
+        Geral.PrintNeutral("\nIniciando geração de código...");
+
+        ControleGerador.ParaAssembly();
+
+        for (LinhaAssembly l:ControleGerador.codigoAssembly) {
+            Geral.PrintLinhaAssembly(l);
+        }
     }
 }

@@ -1,0 +1,7 @@
+S:      LET Y = 3
+        FOR X = 10 TO 0 STEP - 2
+        PRINT X
+        NEXT X
+        LET Y = Y - 1
+        IF Y > 0 THEN S
+        END

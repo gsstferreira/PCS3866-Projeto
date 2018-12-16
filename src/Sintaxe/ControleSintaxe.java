@@ -15,15 +15,15 @@ public abstract class ControleSintaxe {
     public static String DescricaoErro;
     private static Automato automatoLinha;
 
-    public static int hasDATA = 0;
-    public static boolean hasREAD = false;
-    public static String LinhasREAD;
+    //public static int hasDATA = 0;
+    //public static boolean hasREAD = false;
+    //public static String LinhasREAD = "";
 
     public static void InicializarAutomatos() {
 
         EXP.InicializarAutomato();
         ASSIGN.InicializarAutomato(EXP.automato);
-        DATA.InicializarAutomato();
+        //.InicializarAutomato();
         DEF.InicializarAutomato(EXP.automato);
         FOR.InicializarAutomato(EXP.automato);
         GOSUB.InicializarAutomato();
@@ -31,13 +31,13 @@ public abstract class ControleSintaxe {
         IF.InicializarAutomato(EXP.automato);
         NEXT.InicializarAutomato();
         PRINT.InicializarAutomato(EXP.automato);
-        READ.InicializarAutomato();
+        //READ.InicializarAutomato();
         REMARK.InicializarAutomato();
         RETURN.InicializarAutomato();
 
         List<Automato> automatos = new ArrayList<>();
         automatos.add(ASSIGN.automato);
-        automatos.add(DATA.automato);
+        //automatos.add(DATA.automato);
         automatos.add(DEF.automato);
         automatos.add(FOR.automato);
         automatos.add(GOSUB.automato);
@@ -45,7 +45,7 @@ public abstract class ControleSintaxe {
         automatos.add(IF.automato);
         automatos.add(NEXT.automato);
         automatos.add(PRINT.automato);
-        automatos.add(READ.automato);
+        //automatos.add(READ.automato);
         automatos.add(REMARK.automato);
         automatos.add(RETURN.automato);
 
@@ -86,17 +86,17 @@ public abstract class ControleSintaxe {
         Memoria.TokensReclassificados = AdicaoRedundancia.AdicionarRedundanciaZero(Memoria.TokensReclassificados);
         Memoria.TokensReclassificados = AdicaoRedundancia.AdcionarRedundanciaStep(Memoria.TokensReclassificados);
 
-        if(hasREAD && hasDATA == 0) {
-            DescricaoErro = String.format("Erro: Comando \"READ\" (%s) sem a presença de \"DATA\"",LinhasREAD);
-            return false;
-        }
-        else if(hasDATA > 1) {
-            DescricaoErro = "Erro: Múltiplos comandos \"DATA\"";
-            return false;
-        }
-        else if(hasDATA == 1 && !hasREAD) {
-            Geral.PrintWarning("Alerta: Código contém comando \"DATA\", mas não apresenta comandos \"READ\"");
-        }
+//        if(hasREAD && hasDATA == 0) {
+//            DescricaoErro = String.format("Erro: Comando \"READ\" (%s) sem a presença de \"DATA\"",LinhasREAD);
+//            return false;
+//        }
+//        else if(hasDATA > 1) {
+//            DescricaoErro = "Erro: Múltiplos comandos \"DATA\"";
+//            return false;
+//        }
+//        else if(hasDATA == 1 && !hasREAD) {
+//            Geral.PrintWarning("Alerta: Código contém comando \"DATA\", mas não apresenta comandos \"READ\"");
+//        }
 
         return true;
     }

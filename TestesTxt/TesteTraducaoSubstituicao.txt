@@ -1,4 +1,3 @@
-        DATA 10, -13
 R:      LET X = 12
         LET X = ((200 + X) / FN G(X + FN H(100)))*25
         LET A3 = 0

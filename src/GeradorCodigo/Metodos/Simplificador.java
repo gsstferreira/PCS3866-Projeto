@@ -48,21 +48,21 @@ public abstract class Simplificador {
             }
         } while (mudancas != 0);
 
-        if(ControleSintaxe.hasDATA == 1 && !ControleSintaxe.hasREAD) {
-            for (List<Token> l:ll) {
-                boolean removed = false;
-                for (Token t:l) {
-                    if(t.Token.equals("DATA")) {
-                        ll.set(t.Linha,new ArrayList<>());
-                        removed = true;
-                        break;
-                    }
-                }
-                if(removed) {
-                    break;
-                }
-            }
-        }
+//        if(!ControleSintaxe.hasREAD) {
+//            for (List<Token> l:ll) {
+//                boolean removed = false;
+//                for (Token t:l) {
+//                    if(t.Token.equals("DATA")) {
+//                        ll.set(t.Linha,new ArrayList<>());
+//                        removed = true;
+//                        break;
+//                    }
+//                }
+//                if(removed) {
+//                    break;
+//                }
+//            }
+//        }
 
         for (List<Token> l:ll) {
             for (Token t:l) {

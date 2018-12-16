@@ -1,0 +1,8 @@
+        LET X = 0
+        GOSUB C
+        PRINT "X = ",X
+C:      LET X = X + 13
+        LET X = X * X
+        RETURN
+        END
+

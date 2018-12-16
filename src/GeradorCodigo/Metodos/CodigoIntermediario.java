@@ -89,6 +89,8 @@ public abstract class CodigoIntermediario {
                 }
                 l.Expressoes.add(EXPtoRPN.ExpToRPN(t));
 
+                l.Variaveis.add(t.get(0));
+
                 Loops.push(l);
                 NovasLinhas.add(l);
                 break;
@@ -98,6 +100,8 @@ public abstract class CodigoIntermediario {
 
                 LinhaCodInter x = Loops.pop();
                 l.Expressoes.add(x.Expressoes.get(2));
+                l.Expressoes.add(x.Expressoes.get(1));
+                l.Variaveis.add(x.Variaveis.get(1));
                 NovasLinhas.add(l);
                 break;
             case "IF":
@@ -132,42 +136,42 @@ public abstract class CodigoIntermediario {
                 l.Tipo = LinhaCodInter.RETURN;
                 NovasLinhas.add(l);
                 break;
-            case "DATA":
-                l.Tipo = LinhaCodInter.DATA;
-                linha.remove(0);
-
-                while (linha.size() > 0) {
-                    Token tt = linha.get(0);
-
-                    if(tt.Token.equals("-")) {
-                        Token t2 = linha.get(1);
-                        t2.Token = "-".concat(t2.Token);
-                        l.Variaveis.add(t2);
-                        linha.remove(0);
-                    }
-                    else {
-                        l.Variaveis.add(tt);
-                    }
-                    linha.remove(0);
-                }
-                NovasLinhas.add(l);
-                break;
-            case "READ":
-                l.Tipo = LinhaCodInter.READ;
-                linha.remove(0);
-                boolean f = false;
-                while(!f) {
-                    l.Variaveis.add(linha.get(0));
-                    linha.remove(0);
-                    if(linha.size() == 0) {
-                        f = true;
-                    }
-                    else {
-                        linha.remove(0);
-                    }
-                }
-                NovasLinhas.add(l);
-                break;
+//            case "DATA":
+//                l.Tipo = LinhaCodInter.DATA;
+//                linha.remove(0);
+//
+//                while (linha.size() > 0) {
+//                    Token tt = linha.get(0);
+//
+//                    if(tt.Token.equals("-")) {
+//                        Token t2 = linha.get(1);
+//                        t2.Token = "-".concat(t2.Token);
+//                        l.Variaveis.add(t2);
+//                        linha.remove(0);
+//                    }
+//                    else {
+//                        l.Variaveis.add(tt);
+//                    }
+//                    linha.remove(0);
+//                }
+//                NovasLinhas.add(l);
+//                break;
+//            case "READ":
+//                l.Tipo = LinhaCodInter.READ;
+//                linha.remove(0);
+//                boolean f = false;
+//                while(!f) {
+//                    l.Variaveis.add(linha.get(0));
+//                    linha.remove(0);
+//                    if(linha.size() == 0) {
+//                        f = true;
+//                    }
+//                    else {
+//                        linha.remove(0);
+//                    }
+//                }
+//                NovasLinhas.add(l);
+//                break;
         }
     }
 

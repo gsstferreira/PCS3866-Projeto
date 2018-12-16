@@ -1,18 +1,32 @@
 package GeradorCodigo.Metodos;
 
+import Classes.GeradorCodigo.LinhaAssembly;
 import Classes.Token;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 public abstract class RPNtoMVN {
 
-    public static String TransformarExpressaoRPN(List<Token> exp_rpn, String destino) {
+    public static List<LinhaAssembly> TransformarExpressaoRPN(List<Token> exp_rpn, String destino) {
 
         int stack = 0;
+        List<LinhaAssembly> gerado = new ArrayList<>();
         List<Token> tl = new ArrayList<>(exp_rpn);
-        StringBuilder sb = new StringBuilder();
+
+        if(exp_rpn.size() == 1) {
+            Token t = exp_rpn.get(0);
+
+            if(t.Tipo == Token.IDENTIFICADOR) {
+                gerado.add(new LinhaAssembly("!","LD",t.Token));
+                gerado.add(new LinhaAssembly("!","MM",destino));
+            }
+            else {
+                gerado.add(new LinhaAssembly("!","LV",String.format("\\%s",t.Token)));
+                gerado.add(new LinhaAssembly("!","MM",destino));
+            }
+            return gerado;
+        }
 
         for(int i = 0; i < tl.size()-1; i++) {
 
@@ -22,7 +36,10 @@ public abstract class RPNtoMVN {
             if(t.Tipo == Token.IDENTIFICADOR) {
 
                 if(t2.Tipo == Token.IDENTIFICADOR || t2.Tipo == Token.NUMERO) {
-                    sb.append(String.format("LD  [%s]\nMM  [R%d]\n",t.Token,stack));
+
+                    gerado.add(new LinhaAssembly("!","LD",t.Token));
+                    gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
+
                     stack++;
                 }
                 else if(t2.Tipo == Token.OPERADOR){
@@ -32,16 +49,20 @@ public abstract class RPNtoMVN {
                     switch (t2.Token) {
 
                         case "+":
-                            sb.append(String.format("ADD [%s]\nMM  [R%d]\n",t.Token,stack));
+                            gerado.add(new LinhaAssembly("!","ADD",String.format("%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
                             break;
                         case "-":
-                            sb.append(String.format("SUB [%s]\nMM  [R%d]\n",t.Token,stack));
+                            gerado.add(new LinhaAssembly("!","SUB",String.format("%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
                             break;
                         case "*":
-                            sb.append(String.format("MUL [%s]\nMM  [R%d]\n",t.Token,stack));
+                            gerado.add(new LinhaAssembly("!","MUL",String.format("%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
                             break;
                         case "/":
-                            sb.append(String.format("DIV [%s]\nMM  [R%d]\n",t.Token,stack));
+                            gerado.add(new LinhaAssembly("!","DIV",String.format("%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
                             break;
                     }
                     stack++;
@@ -51,7 +72,10 @@ public abstract class RPNtoMVN {
             else if(t.Tipo == Token.NUMERO) {
 
                 if(t2.Tipo == Token.IDENTIFICADOR || t2.Tipo == Token.NUMERO) {
-                    sb.append(String.format("LV %s\nMM  [R%d]\n",t.Token,stack));
+
+                    gerado.add(new LinhaAssembly("!","LV",String.format("\\%s",t.Token)));
+                    gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
+
                     stack++;
                 }
                 else if(t2.Tipo == Token.OPERADOR){
@@ -61,16 +85,20 @@ public abstract class RPNtoMVN {
                     switch (t2.Token) {
 
                         case "+":
-                            sb.append(String.format("ADD [%s]\nMM  [R%d]\n",t.Token,stack));
+                            gerado.add(new LinhaAssembly("!","ADD",String.format("\\%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
                             break;
                         case "-":
-                            sb.append(String.format("SUB [%s]\nMM  [R%d]\n",t.Token,stack));
+                            gerado.add(new LinhaAssembly("!","SUB",String.format("\\%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
                             break;
                         case "*":
-                            sb.append(String.format("MUL [%s]\nMM  [R%d]\n",t.Token,stack));
+                            gerado.add(new LinhaAssembly("!","MUL",String.format("\\%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
                             break;
                         case "/":
-                            sb.append(String.format("DIV [%s]\nMM  [R%d]\n",t.Token,stack));
+                            gerado.add(new LinhaAssembly("!","DIV",String.format("\\%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
                             break;
                     }
                     stack++;
@@ -84,30 +112,33 @@ public abstract class RPNtoMVN {
                     stack--;
 
                     int x = stack;
-                    sb.append(String.format("LD  [R%d]\n",x - 1));
+                    gerado.add(new LinhaAssembly("!","LD",String.format("REG%d",stack-1)));
 
                     switch (t2.Token) {
 
                         case "+":
-                            sb.append(String.format("ADD [R%d]\nMM  [R%d]\n",x,x-1));
+                            gerado.add(new LinhaAssembly("!","ADD",String.format("REG%d",stack)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack-1)));
                             break;
                         case "-":
-                            sb.append(String.format("SUB [R%d]\nMM  [R%d]\n",x,x-1));
+                            gerado.add(new LinhaAssembly("!","SUB",String.format("REG%d",stack)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack-1)));
                             break;
                         case "*":
-                            sb.append(String.format("MUL [R%d]\nMM  [R%d]\n",x,x-1));
+                            gerado.add(new LinhaAssembly("!","MUL",String.format("REG%d",stack)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack-1)));
                             break;
                         case "/":
-                            sb.append(String.format("DIV [R%d]\nMM  [R%d]\n",x,x-1));
+                            gerado.add(new LinhaAssembly("!","DIV",String.format("REG%d",stack)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack-1)));
                             break;
                     }
                 }
             }
         }
 
-
-        sb.append(String.format("MM [%s]\n",destino));
-        return sb.toString();
+        gerado.add(new LinhaAssembly("!","MM",destino));
+        return gerado;
     }
 
 }
