@@ -8,7 +8,7 @@ import java.util.Stack;
 
 public abstract class RPNtoMVN {
 
-    public static String TransformarExpressaoRPN(List<Token> exp_rpn) {
+    public static String TransformarExpressaoRPN(List<Token> exp_rpn, String destino) {
 
         int stack = 0;
         List<Token> tl = new ArrayList<>(exp_rpn);
@@ -106,6 +106,7 @@ public abstract class RPNtoMVN {
         }
 
 
+        sb.append(String.format("MM [%s]\n",destino));
         return sb.toString();
     }
 

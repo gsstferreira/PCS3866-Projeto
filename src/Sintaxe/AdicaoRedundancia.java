@@ -20,6 +20,10 @@ public abstract class AdicaoRedundancia {
 
                 Token t1 = l.get(j);
 
+                if(t1.Token.equals("DATA")) {
+                    break;
+                }
+
                 if(!",=(".contains(t1.Token)) {
                     listaFinal.get(i).add(t1);
                 }

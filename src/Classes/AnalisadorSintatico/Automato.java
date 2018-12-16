@@ -20,7 +20,6 @@ public class Automato {
         Estado atual = EstadoInicial;
 
         List<Token> s = new ArrayList<>(tokens);
-        List<Token> TokenErro = new ArrayList<>(tokens);
 
         while(!atual.Final &&  !Erro) {
 
@@ -86,8 +85,7 @@ public class Automato {
         }
 
         if(Erro) {
-            TokenErro = s;
-            return new ResultadoAnalise(TokenErro,false);
+            return new ResultadoAnalise(s,false);
         }
         else {
             return new ResultadoAnalise(s,true);

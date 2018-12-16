@@ -1,16 +1,17 @@
-package Testes;
+package Testes.Sintatico;
 
 import Classes.Memoria;
 import Classes.Token;
 import Lexico.Metodos.CategorizadorToken;
-import Metodos.Geral;
 import Lexico.Motores.*;
+import Metodos.Geral;
+import Sintaxe.ControleSintaxe;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class TesteNivel6Erro2 {
+public class TesteSintaxeF2 {
 
     public static void main(String[] args) {
 
@@ -19,12 +20,14 @@ public class TesteNivel6Erro2 {
 
         try {
             // busca ponteiro para arquivo com código e inicializa os motores de evento
-            ControleMotores.InicializaMotores(new FileInputStream("TestesTxt/TesteNivel6Falha2.txt"));
+            ControleMotores.InicializaMotores(new FileInputStream("TestesTxt/TesteSintaxeF2.txt"));
         } catch (IOException e) {
             // arquivo não encontrado
-            System.out.print("Arquivo 'teste.txt'não foi encontrado.\n");
+            Geral.PrintNeutral("Arquivo 'teste.txt'não foi encontrado.\n");
             return;
         }
+
+        Geral.PrintNeutral("Iniciando análise léxica...");
 
         // execução dos eventos de nível de abstração 1 a 5
         while (ControleMotores.ContinuarAnalise(1,5)) {
@@ -69,10 +72,31 @@ public class TesteNivel6Erro2 {
             return;
         }
 
+        Geral.PrintNeutral("Análise léxica OK. Código separado por tokens:\n");
+
         for (List<Token> l:Memoria.TokensReclassificados) {
+
+            if(l.get(0).Tipo != Token.IDENTIFICADOR) {
+                System.out.print("\t");
+            }
+
             for (Token t:l) {
                 Geral.PrintToken(t);
             }
+            System.out.println();
         }
+
+       Geral.PrintNeutral("\nIniciando análise sintática...");
+
+        boolean sintatica = ControleSintaxe.AnaliseSintatica();
+
+        if(!sintatica) {
+            System.out.println();
+            Geral.PrintErro(ControleSintaxe.DescricaoErro);
+        }
+        else {
+            Geral.PrintNeutral("Análise sintática OK.\n");
+        }
+
     }
 }

@@ -10,6 +10,6 @@ L1:     LET A3 = A3 + X
         PRINT "Imprimindo uma string!"
         DEF FN G(X) = X * X / 2
         IF X = 0 THEN STOP
-        IF Y > 3 THEN R
+        IF G > 3 THEN R
         GO TO L1
         END

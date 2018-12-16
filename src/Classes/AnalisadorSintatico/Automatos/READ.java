@@ -51,7 +51,6 @@ public abstract class READ {
         read.Estados.add(read3);
         read.Estados.add(read4);
 
-
         automato = read;
     }
 }

@@ -15,6 +15,10 @@ public abstract class ControleSintaxe {
     public static String DescricaoErro;
     private static Automato automatoLinha;
 
+    public static int hasDATA = 0;
+    public static boolean hasREAD = false;
+    public static String LinhasREAD;
+
     public static void InicializarAutomatos() {
 
         EXP.InicializarAutomato();
@@ -59,21 +63,17 @@ public abstract class ControleSintaxe {
     public static boolean AnaliseSintatica() {
 
         InicializarAutomatos();
-
         List<Token> programa = new ArrayList<>();
 
-        for (List<Token> lt : Memoria.TokensReclassificados) {
-            programa.addAll(lt);
-        }
+        for (List<Token> lt : Memoria.TokensReclassificados) { programa.addAll(lt); }
 
         ResultadoAnalise a = VerificarSintaxe(programa);
 
         if (!a.Ok || !a.linhaRestante.isEmpty()) {
             int linha = a.linhaRestante.get(0).Linha;
-            DescricaoErro = String.format("Linha %d: Erro de sintaxe: %s", linha + 1, Geral.FormatStringLinha(Memoria.Linhas.get(linha)));
+            DescricaoErro = String.format("Linha %d: Erro de sintaxe: %s", linha, Geral.FormatStringLinha(Memoria.Linhas.get(linha)));
             return false;
         }
-
 
         if (!TabelaSimbolos.PreencherTabela(Memoria.TokensReclassificados)) {
             return false;
@@ -85,6 +85,18 @@ public abstract class ControleSintaxe {
 
         Memoria.TokensReclassificados = AdicaoRedundancia.AdicionarRedundanciaZero(Memoria.TokensReclassificados);
         Memoria.TokensReclassificados = AdicaoRedundancia.AdcionarRedundanciaStep(Memoria.TokensReclassificados);
+
+        if(hasREAD && hasDATA == 0) {
+            DescricaoErro = String.format("Erro: Comando \"READ\" (%s) sem a presença de \"DATA\"",LinhasREAD);
+            return false;
+        }
+        else if(hasDATA > 1) {
+            DescricaoErro = "Erro: Múltiplos comandos \"DATA\"";
+            return false;
+        }
+        else if(hasDATA == 1 && !hasREAD) {
+            Geral.PrintWarning("Alerta: Código contém comando \"DATA\", mas não apresenta comandos \"READ\"");
+        }
 
         return true;
     }

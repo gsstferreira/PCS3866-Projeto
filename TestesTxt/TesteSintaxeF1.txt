@@ -1,6 +1,6 @@
         DATA 10, -13
 R:      LET X = 12
-        LET X = ((200 + X) / FN G(233))*25
+        LET X = ((200 + P) / FN G(233))*25
         LET A3 = 0
 L1:     LET A3 = A3 + X
         PRINT X, A3

@@ -8,8 +8,10 @@ import java.util.List;
 
 public abstract class TabelaSimbolos {
 
-    private static List<Identificador> IDENTIFICADORES = new ArrayList<>();
-    private static List<Identificador> IDENT_DECLARE = new ArrayList<>();
+    public static List<Identificador> IDENTIFICADORES = new ArrayList<>();
+    public static List<Identificador> IDENT_DECLARE = new ArrayList<>();
+
+    private static List<Identificador> FOR_NEXT = new ArrayList<>();
 
     private static boolean AdicionarIdentificador(Token t,boolean declaracao, int tipo){
 
@@ -30,8 +32,8 @@ public abstract class TabelaSimbolos {
                     return true;
                 default:
                     for (Identificador i:IDENT_DECLARE) {
-                        if(i.Tipo == tipo) {
-                            ControleSintaxe.DescricaoErro = String.format("Erro: Declaração de \"%s\" (linha %d), já foi declarado em (%d)",t.Token,t.Linha,t.Linha);
+                        if(i.Tipo == tipo && i.Nome.equals(t.Token)) {
+                            ControleSintaxe.DescricaoErro = String.format("Erro: Declaração de \"%s\" (linha %d), já foi declarado em (%d)",t.Token,t.Linha,i.Linha);
                             return false;
                         }
                     }
@@ -57,6 +59,14 @@ public abstract class TabelaSimbolos {
                 ok = AdicionarIdentificador(t,true,Identificador.LABEL);
                 l.remove(0);
                 l.remove(0);
+
+                String s = l.get(0).Token;
+
+                if(s.equals("DATA") || s.equals("DEF") || s.equals("RETURN") || s.equals("END") || s.equals("REM") || s.equals("NEXT")) {
+                    ok = false;
+                    ControleSintaxe.DescricaoErro = String.format("Erro: comando \"%s\" não permite uso de labels (linha %d)",s,t.Linha);
+                }
+
             }
 
             if(!ok) {
@@ -127,9 +137,8 @@ public abstract class TabelaSimbolos {
 
                 if(tt.Token.equals("FN")) {
                     tt = l.get(j+1);
-                    ok = AdicionarIdentificador(t,false,Identificador.FUNCAO);
+                    ok = AdicionarIdentificador(tt,false,Identificador.FUNCAO);
                     l.remove(j+1);
-                    j--;
                 }
             }
 
@@ -149,21 +158,61 @@ public abstract class TabelaSimbolos {
 
             Token t = l.get(0);
 
-            if(t.Token.equals("LET")) {
+            if(t.Token.equals("DATA")) {
+                ControleSintaxe.hasDATA++;
+            }
+            else if(t.Token.equals("READ")) {
+                ControleSintaxe.hasREAD = true;
+                ControleSintaxe.LinhasREAD = ControleSintaxe.LinhasREAD.concat(String.format("%d ",t.Linha));
+            }
+
+            else if(t.Token.equals("LET") || t.Token.equals("FOR")) {
                 Token tt = l.get(1);
                 ok = AdicionarIdentificador(tt,true,Identificador.VARIAVEL);
                 l.remove(0);
                 l.remove(0);
+
+                if(t.Token.equals("FOR")) {
+                    FOR_NEXT.add(new Identificador(tt,Identificador.VARIAVEL));
+                }
+
             }
             if(!ok) {
                 return false;
             }
 
-            for (Token tt:l) {
-                if(tt.Tipo == Token.IDENTIFICADOR) {
-                    ok = AdicionarIdentificador(tt,false,Identificador.VARIAVEL);
+            t = l.get(0);
+
+            if(t.Token.equals("NEXT")) {
+                t = l.get(1);
+
+                for (Identificador i:FOR_NEXT) {
+                    if(i.Nome.equals(t.Token)) {
+                        if(i.Linha < t.Linha) {
+                            FOR_NEXT.remove(i);
+                            break;
+                        }
+                    }
                 }
             }
+
+            else {
+                for (Token tt:l) {
+                    if(tt.Tipo == Token.IDENTIFICADOR) {
+                        ok = AdicionarIdentificador(tt,false,Identificador.VARIAVEL);
+
+                    }
+                }
+            }
+
+            if(!ok) {
+                return false;
+            }
+        }
+        if(FOR_NEXT.size() > 0) {
+            Identificador i = FOR_NEXT.get(0);
+            ControleSintaxe.DescricaoErro = String.format("Erro: laço declarado em (%d) não tem seu respctivo limitador (\"NEXT\")",i.Linha);
+            return false;
         }
         return true;
     }
@@ -214,6 +263,8 @@ public abstract class TabelaSimbolos {
             int labelCount = 0;
             int funcCount = 0;
 
+            boolean funcRecursao = false;
+
 loop:       for (Identificador i2:IDENT_DECLARE) {
 
                 if(i.Nome.equals(i2.Nome)) {
@@ -238,6 +289,11 @@ loop:       for (Identificador i2:IDENT_DECLARE) {
                             case Identificador.FUNCAO:
                                 funcCount++;
                                 ok = true;
+
+                                if(i.Linha == i2.Linha) {
+                                    funcRecursao = true;
+                                }
+
                                 break;
 
                         }
@@ -251,6 +307,10 @@ loop:       for (Identificador i2:IDENT_DECLARE) {
             }
             else if(labelCount > 1 || funcCount > 1) {
                 ControleSintaxe.DescricaoErro = String.format("Erro: Identificador \"%s\" (linha %d) tem mais de uma declaração",i.Nome,i.Linha);
+                return false;
+            }
+            else if(funcRecursao) {
+                ControleSintaxe.DescricaoErro = String.format("Erro: Função \"%s(X)\" (linha %d) é referenciada na própria declaração",i.Nome,i.Linha);
                 return false;
             }
         }

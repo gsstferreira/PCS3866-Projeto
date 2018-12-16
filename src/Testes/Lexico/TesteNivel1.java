@@ -1,4 +1,4 @@
-package Testes;
+package Testes.Lexico;
 
 import Classes.Memoria;
 import Metodos.Geral;

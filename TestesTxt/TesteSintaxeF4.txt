@@ -12,4 +12,5 @@ L1:     LET A3 = A3 + X
         IF X = 0 THEN STOP
         IF Y > 3 THEN R
         GO TO L1
+        DATA 1, 2
         END
