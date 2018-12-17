@@ -12,7 +12,6 @@ public abstract class TraduzirAssembly {
 
     private static int branch = 0;
     private static Stack<String> returnLoop = new Stack<>();
-    private static Stack<String> returnSub = new Stack<>();
     private static List<String> goSubLabels = new ArrayList<>();
 
 //    private static int DataLen = 0;
@@ -47,9 +46,10 @@ public abstract class TraduzirAssembly {
             case LinhaCodInter.GOSUB:
                 String subLabel = String.format("S_%s_%d",l.Variaveis.get(0).Token, branch);
                 branch++;
-                returnSub.push(subLabel);
                 goSubLabels.add(l.Variaveis.get(0).Token);
 
+                ll.add(new LinhaAssembly(l.Label,"LV",subLabel));
+                ll.add(new LinhaAssembly(l.Label,"MM","SUB_RET"));
                 ll.add(new LinhaAssembly(l.Label,"JP",l.Variaveis.get(0).Token));
                 ll.add(new LinhaAssembly(subLabel,"LV","\\000"));
 
@@ -167,7 +167,7 @@ public abstract class TraduzirAssembly {
                 ll.get(0).Label = l.Label;
                 return ll;
             case LinhaCodInter.RETURN:
-                ll.add(new LinhaAssembly("!","JP",returnSub.pop()));
+                ll.add(new LinhaAssembly("!","JP","SUB_RET"));
                 return ll;
 //            case LinhaCodInter.READ:
 //                for (Token t1:l.Variaveis) {

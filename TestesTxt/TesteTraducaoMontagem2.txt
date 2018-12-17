@@ -1,0 +1,10 @@
+        LET X = 0
+        GOSUB S
+        GOSUB S
+        GOSUB S
+        GOSUB S
+        GOTO STOP
+S:      PRINT X
+        LET X = X + 1
+        RETURN
+        END

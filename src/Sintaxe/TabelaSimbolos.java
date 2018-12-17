@@ -75,12 +75,12 @@ public abstract class TabelaSimbolos {
 
             t = l.get(0);
 
-            if(t.Token.equals("GOTO") || t.Token.equals("GOSUB")) {
+            if( t.Token.equals("GOSUB")) {
                 t = l.get(1);
                 ok = AdicionarIdentificador(t,false,Identificador.LABEL);
                 l.remove(1);
             }
-            else if(t.Token.equals("IF")) {
+            else if(t.Token.equals("GOTO") || t.Token.equals("IF")) {
                 t = l.get(l.size() - 1);
 
                 if(t.Tipo != Token.STOP) {

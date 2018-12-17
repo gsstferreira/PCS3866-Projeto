@@ -80,24 +80,38 @@ public abstract class RPNtoMVN {
                 }
                 else if(t2.Tipo == Token.OPERADOR){
 
-                    stack--;
-
                     switch (t2.Token) {
 
                         case "+":
-                            gerado.add(new LinhaAssembly("!","ADD",String.format("\\%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","LV",String.format("\\%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
+                            stack--;
+                            gerado.add(new LinhaAssembly("!","LD",String.format("REG%d",stack)));
+                            gerado.add(new LinhaAssembly("!","ADD",String.format("REG%d",stack+1)));
                             gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
                             break;
                         case "-":
-                            gerado.add(new LinhaAssembly("!","SUB",String.format("\\%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","LV",String.format("\\%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
+                            stack--;
+                            gerado.add(new LinhaAssembly("!","LD",String.format("REG%d",stack)));
+                            gerado.add(new LinhaAssembly("!","SUB",String.format("REG%d",stack+1)));
                             gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
                             break;
                         case "*":
-                            gerado.add(new LinhaAssembly("!","MUL",String.format("\\%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","LV",String.format("\\%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
+                            stack--;
+                            gerado.add(new LinhaAssembly("!","LD",String.format("REG%d",stack)));
+                            gerado.add(new LinhaAssembly("!","MUL",String.format("REG%d",stack+1)));
                             gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
                             break;
                         case "/":
-                            gerado.add(new LinhaAssembly("!","DIV",String.format("\\%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","LV",String.format("\\%s",t.Token)));
+                            gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
+                            stack--;
+                            gerado.add(new LinhaAssembly("!","LD",String.format("REG%d",stack)));
+                            gerado.add(new LinhaAssembly("!","DIV",String.format("REG%d",stack+1)));
                             gerado.add(new LinhaAssembly("!","MM",String.format("REG%d",stack)));
                             break;
                     }

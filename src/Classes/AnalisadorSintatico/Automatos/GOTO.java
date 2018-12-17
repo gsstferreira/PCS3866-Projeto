@@ -33,6 +33,12 @@ public abstract class GOTO {
         t.ProximoEstado = goto3;
         goto2.addTransicao(t);
 
+        t = new Transicao();
+        t.TipoTransiscao = Transicao.TOKEN;
+        t.TokenTransicao = Token.STOP;
+        t.ProximoEstado = goto3;
+        goto2.addTransicao(t);
+
         _goto.EstadoInicial = goto1;
         _goto.Estados.add(goto1);
         _goto.Estados.add(goto2);
